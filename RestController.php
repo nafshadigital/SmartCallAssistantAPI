@@ -92,5 +92,11 @@ switch($view){
 		$smartCallRestHandler = new SmartCallRestHandler();
 		$smartCallRestHandler -> getNotification($requestObj);
 	break;
+
+	case "SAVE_CONTACT":
+		$smartCallRestHandler = new SmartCallRestHandler();
+		$smartCallRestHandler -> addContact($requestObj);
+	break;
+
 }
 ?>

@@ -9,18 +9,8 @@ class SmartCallRestHandler extends SimpleRest
 {
 	function getCountry()
 	{
-		$m = new MySQL();
-		$resultCountryObj = new stdClass();
-		$query = "select * from tbl_country where is_active = '1' ";
-		$res = $m -> executeQuery($query);
-		$datas = array();
-		while($row = mysql_fetch_object($res))
-		{
-			$datas [] = $row;
-		}
-		$resultCountryObj = $datas;
-		
-		$this -> output($resultCountryObj);
+		$arr = json_decode(file_get_contents("CountryCodes.json"));
+		$this -> output($arr);
 	}
 		
 	function signUp($signUpObj)
@@ -133,6 +123,29 @@ class SmartCallRestHandler extends SimpleRest
 		$this -> output($resultUpdateAccObj);
 	}
 	
+	function addContact($userContactsObj)
+	{
+		if(!$userContactsObj)
+		{
+			echo "Incorrect Parameter";
+			return;
+		}
+		
+		$m = new MySQL();
+		$resultSupportObj = new stdClass();
+		
+		$query = "insert into tbl_user_contacts (user_id, contact_name,contact_number,isRegistered) 
+
+		value ('{$userContactsObj -> user_id}', '{$userContactsObj -> contact_name}', '{$userContactsObj -> contact_number}', false)";
+		$m -> executeQuery($query);
+		
+		$id = mysql_insert_id();
+		
+	
+		$resultSupportObj -> message = {$userContactsObj -> contact_number};
+		
+		$this -> output($resultSupportObj);
+	}
 	function createSupport($createSupportObj)
 	{
 		if(!$createSupportObj)
@@ -265,7 +278,7 @@ function sendNotification($sendNotiObj){
 	
 function getMaxid($userObj){
 	$m = new MySQL();
-	$query = "select max(id) from tbl_notifications where user_id = '{$userObj -> user_id}'";
+	$query = "select max(id) from tbl_notifications where to_user_id = '{$userObj -> user_id}'";
 	$maxId = $m -> executeScalar($query);
 	$resObj = new stdClass();
 	$resObj -> maxId = $maxId;
@@ -274,8 +287,14 @@ function getMaxid($userObj){
 
 function getNotification($getNotiObj){
 	$m = new MySQL();
+
+	//SELECT n.id,n.created_date,n.message,n.to_user_id,n.user_id,u.name FROM tbl_notifications n ,tbl_users u WHERE n.id > 49 AND n.to_user_id = 193 AND u.id = n.to_user_id ORDER BY n.id DESC LIMIT 0,5
 	
+
+
 	$query = "select * from tbl_notifications where id > '{$getNotiObj -> id}' and to_user_id = '{$getNotiObj -> user_id}' order by id desc limit 0,5";
+	$query = "	SELECT n.id,n.created_date,n.message,n.to_user_id,n.user_id,u.name FROM tbl_notifications n ,tbl_users u WHERE n.id > '{$getNotiObj -> id}' and n.to_user_id = '{$getNotiObj -> user_id}' AND u.id = n.to_user_id ORDER BY n.id DESC LIMIT 0,5";
+
 	//echo $query;
 	$res =  $m -> executeQuery($query);
 	$arr = array();
@@ -297,4 +316,4 @@ function getNotification($getNotiObj){
 }
 
 }
-?>
+?>>
