@@ -106,18 +106,20 @@ class SmartCallRestHandler extends SimpleRest
 		$m = new MySQL();
 		$resultUpdateAccObj = new stdClass();
 
-		$query = "select count(name) from tbl_users where email = '{$updateAccObj -> email}'";
+		$query = "select count(name) from tbl_users where email = '{$updateAccObj -> email}' and id <> '{$updateAccObj -> id}'";
 		$isExists = $m -> executeScalar($query);
 
 		if($isExists == 0)
 		{
-			$query = "update tbl_users set name = '{$updateAccObj -> name}', email = '{$updateAccObj -> email}' where id = '{$updateAccObj -> id}' ";
+			$query = "update tbl_users set name = '{$updateAccObj -> name}', device_id = '{$updateAccObj -> device_id}', android_id = '{$updateAccObj -> android_id}', email = '{$updateAccObj -> email}' where id = '{$updateAccObj -> id}' ";
 			$m -> executeQuery($query);
 
 			$resultUpdateAccObj -> message = "Update Account Success..";
+			$resultUpdateAccObj -> error = "0";
 		}
 		else
 		{
+			$resultUpdateAccObj -> error = "1";
 			$resultUpdateAccObj -> message = "Email Address already exist !";
 		}
 		$this -> output($resultUpdateAccObj);
@@ -142,10 +144,11 @@ class SmartCallRestHandler extends SimpleRest
 		$id = mysql_insert_id();
 		
 	
-		$resultSupportObj -> message = {$userContactsObj -> contact_number};
+		$resultSupportObj -> message = $id;
 		
 		$this -> output($resultSupportObj);
 	}
+
 	function createSupport($createSupportObj)
 	{
 		if(!$createSupportObj)
@@ -315,5 +318,45 @@ function getNotification($getNotiObj){
 	$this -> output($objRes);
 }
 
+function updateFCM($updateAccObj)
+{
+	if(!$updateAccObj)
+	{
+		echo "Incorrect Parameter";
+		return;
+	}
+	
+	$m = new MySQL();
+	$resultUpdateAccObj = new stdClass();
+
+	$query = "update tbl_users set fcm_token = '{$updateAccObj -> fcmtoken}' where id = '{$updateAccObj -> id}' ";
+	$m -> executeQuery($query);
+
+	$resultUpdateAccObj -> message = "FCM Updated !";
+	$resultUpdateAccObj -> error = "0";
+
+	$this -> output($resultUpdateAccObj);
 }
-?>>
+
+function sendRandomHeart($userObj){
+	$m = new MySQL();
+	$query = "select fcm_token from tbl_users where id <> '{$updateAccObj -> id}' AND LENGTH(fcm_token) > 10 ORDER BY RAND() LIMIT 1"; // Get only one Random record
+	$fcm_token = $m -> executeScalar($query);
+	$resObj = new stdClass();
+	$resObj -> fcm_token = $fcm_token;
+	$this -> output($resObj);
+}
+
+function sendHeart($userObj){
+	$m = new MySQL();
+	$query = "insert into tbl_users ( 	country_code, mobile, created_date	 ) value ( 	'{$signUpObj -> country_code}', '{$signUpObj -> mobile}', '".date('Y-m-d')."'	 )";
+	$m -> executeQuery($query);
+	
+	$resultSignUpObj -> status = "1";
+	$resultSignUpObj -> send_id = mysql_insert_id();
+	$resultSignUpObj -> message = "Send Heart Successful !";
+
+	$this -> output($resultSignUpObj);
+}
+}
+?>

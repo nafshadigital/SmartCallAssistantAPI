@@ -98,5 +98,19 @@ switch($view){
 		$smartCallRestHandler -> addContact($requestObj);
 	break;
 
+	case "FCM_UPDATE":
+		$smartCallRestHandler = new SmartCallRestHandler();
+		$smartCallRestHandler -> updateFCM($requestObj);
+	break;
+
+	case "SEND_RAN_HEART":
+		$smartCallRestHandler = new SmartCallRestHandler();
+		$smartCallRestHandler -> sendRandomHeart($requestObj);
+	break;
+
+	case "SEND_HEART":
+		$smartCallRestHandler = new SmartCallRestHandler();
+		$smartCallRestHandler -> sendHeart($requestObj);
+	break;
 }
 ?>
