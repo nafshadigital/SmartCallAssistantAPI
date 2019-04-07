@@ -22,8 +22,6 @@ switch($view){
 	case "all":
 		// to handle REST Url /mobile/list/
 		
-		
-
 		//$mobileRestHandler = new MobileRestHandler();
 		//$mobileRestHandler->getAllMobiles();
 		break;
@@ -110,7 +108,18 @@ switch($view){
 
 	case "SEND_HEART":
 		$smartCallRestHandler = new SmartCallRestHandler();
-		$smartCallRestHandler -> sendHeart($requestObj);
+		$smartCallRestHandler -> sendHeartNotification($requestObj);
 	break;
+
+	case "GET_REGISTERED_CONTACTS":
+		$smartCallRestHandler = new SmartCallRestHandler();
+		$smartCallRestHandler -> GetRegisteredContact($requestObj);
+	break;
+
+	case "MULTIPLE_CONTACTS":
+		$smartCallRestHandler = new SmartCallRestHandler();
+		$smartCallRestHandler -> addMultiContacts($requestObj);
+	break;
+
 }
 ?>

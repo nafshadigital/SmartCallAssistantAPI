@@ -60,11 +60,26 @@ class SimpleRest {
 			505 => 'HTTP Version Not Supported');
 		return ($httpStatus[$statusCode]) ? $httpStatus[$statusCode] : $status[500];
 	}
-	
+
 	function output($rawData) {
 		if(empty($rawData)) {
 			$statusCode = 404;
-			$rawData = array('error' => 'No mobiles found!');		
+			$rawData = array('error' => 'No Data found!');		
+		} else {
+			$statusCode = 200;
+		}
+		
+		$requestContentType = $_SERVER['HTTP_ACCEPT'];
+		$this ->setHttpHeaders($requestContentType, $statusCode);
+
+		$response = $this->encodeJson($rawData);
+		echo $response;
+	}
+	
+	function outputgeneral($rawData) {
+		if(empty($rawData)) {
+			$statusCode = 404;
+			$rawData = array('error' => 'No Data found!');		
 		} else {
 			$statusCode = 200;
 		}

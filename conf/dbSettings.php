@@ -6,9 +6,9 @@
 
 	define("server"	,	"localhost");
 
-	define("db_username"	, 	"root");
+	define("db_username"	, 	"phpmyadmin");
 
-	define("db_password" ,	"");
+	define("db_password" ,	"rehan123");
 
 	define("database"	,	"smartcallassistant");
 

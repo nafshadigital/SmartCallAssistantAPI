@@ -1,0 +1,51 @@
+# Turn rewrite engine on
+Options +FollowSymlinks
+RewriteEngine on
+
+ErrorDocument 404 404.html
+
+<IfModule mod_rewrite.c>
+RewriteEngine On
+RewriteCond %{REQUEST_FILENAME} !-f
+RewriteCond %{REQUEST_FILENAME} !-d
+# RewriteRule ^(.*)$ index.php/$1 [L]
+RewriteRule ^SmartCallAssistantAPI/api/getCountry1/$  SmartCallAssistantAPI/RestController.php?view=GET_COUNTRY [NC,QSA]
+RewriteRule ^SmartCallAssistantAPI/api/signUp/$  SmartCallAssistantAPI/RestController.php?view=SIGNUP [nc,qsa]
+RewriteRule ^SmartCallAssistantAPI/api/checkOTP/$  SmartCallAssistantAPI/RestController.php?view=CHECK_OTP [nc,qsa]
+RewriteRule ^SmartCallAssistantAPI/api/updateAccount/$  SmartCallAssistantAPI/RestController.php?view=UPDATE_ACCOUNT [nc,qsa]
+RewriteRule ^SmartCallAssistantAPI/api/support/$  SmartCallAssistantAPI/RestController.php?view=CREATE_SUPPORT [nc,qsa]
+RewriteRule ^SmartCallAssistantAPI/api/updateLastSeen/$  SmartCallAssistantAPI/RestController.php?view=UPDATE_LAST_SEEN [nc,qsa]
+RewriteRule ^SmartCallAssistantAPI/api/getprofile/$  SmartCallAssistantAPI/RestController.php?view=GET_PROFILE [nc,qsa]
+RewriteRule ^SmartCallAssistantAPI/api/sendNotify/$  SmartCallAssistantAPI/RestController.php?view=SEND_NOTIFY [nc,qsa]
+RewriteRule ^SmartCallAssistantAPI/api/getmaxid/$  SmartCallAssistantAPI/RestController.php?view=GET_MAXID [nc,qsa]
+RewriteRule ^SmartCallAssistantAPI/api/getnotifyafter/$  SmartCallAssistantAPI/RestController.php?view=GET_NOTIFYAFTER [nc,qsa]
+RewriteRule ^SmartCallAssistantAPI/api/mobile/list/$   SmartCallAssistantAPI/RestController.php?view=all [nc,qsa]
+RewriteRule ^SmartCallAssistantAPI/api/mobile/list/([0-9]+)/$   SmartCallAssistantAPI/RestController.php?view=single&id=$1 [nc,qsa]
+RewriteRule ^SmartCallAssistantAPI/api/savecontact/$  SmartCallAssistantAPI/RestController.php?view=SAVE_CONTACT [nc,qsa]
+RewriteRule ^mobile/list/$   SmartCallAssistantAPI/RestController.php?view=all [nc,qsa]
+RewriteRule ^mobile/list/([0-9]+)/$   SmartCallAssistantAPI/RestController.php?view=single&id=$1 [nc,qsa]
+RewriteRule ^mobile/list/([0-9]+)/$   SmartCallAssistantAPI/RestController.php?view=single&id=$1 [nc,qsa]
+RewriteRule ^SmartCallAssistantAPI/api/getCountry/$  SmartCallAssistantAPI/CountryCodes.json [nc,qsa]
+
+RewriteRule ^SmartCallAssistantAPI/api/updateFCM/$  SmartCallAssistantAPI/RestController.php?view=FCM_UPDATE [nc,qsa]
+RewriteRule ^SmartCallAssistantAPI/api/sendHeart/$  SmartCallAssistantAPI/RestController.php?view=SEND_HEART [nc,qsa]
+RewriteRule ^SmartCallAssistantAPI/api/sendRandomHeart/$  SmartCallAssistantAPI/RestController.php?view=SEND_RAN_HEART [nc,qsa]
+
+RewriteRule ^SmartCallAssistantAPI/api/send_notification/$  SmartCallAssistantAPI/send_fcm.json [nc,qsa]
+
+RewriteRule ^SmartCallAssistantAPI/api/fcm/$  SmartCallAssistantAPI/SendNotification.php [nc,qsa]
+
+RewriteRule ^SmartCallAssistantAPI/api/fcm/  SmartCallAssistantAPI/SendNotification.php [nc,qsa]
+
+RewriteRule ^SmartCallAssistantAPI/api/getRegisteredContacts/  SmartCallAssistantAPI/RestController.php?view=GET_REGISTERED_CONTACTS [nc,qsa]
+
+RewriteRule ^SmartCallAssistantAPI/api/addMultiContacts/  SmartCallAssistantAPI/RestController.php?view=MULTIPLE_CONTACTS [nc,qsa]
+
+
+</IfModule>
+
+
+
+
+
+
