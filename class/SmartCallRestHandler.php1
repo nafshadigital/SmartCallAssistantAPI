@@ -164,7 +164,7 @@ class SmartCallRestHandler extends SimpleRest
 			
 			if($development == 1)
 			{
-				echo "Addcontact --> Incorrect Parameter";
+				echo "Incorrect Parameter";
 				return;
 			}
 
@@ -584,7 +584,7 @@ function sendHeartNotification($sendHeartDetails)
 	{
 		if(!$contacts)
 		{
-			echo "addMultiContacts --> Incorrect Parameter";
+			echo "Incorrect Parameter";
 			return;
 		}
 
@@ -593,15 +593,8 @@ function sendHeartNotification($sendHeartDetails)
 		$contactObject = new stdClass();
 		$contactObject = $contacts;
 		
-   	    if(isset( $contacts -> user_id ))		
-		{
-			$user_id = $contacts -> user_id;
-		}
-
-	    if(isset( $contacts -> contact_size ))
-		{
-			$size    = $contacts -> contact_size;
-		}
+		$user_id = $contacts -> user_id;
+		$size    = $contacts -> contact_size;
 
 		$temp = new stdClass();
 
@@ -613,15 +606,8 @@ function sendHeartNotification($sendHeartDetails)
 
 			  $userContactsObj = new stdClass();
 		      $user_id = $contacts -> user_id;
-
-			  if(isset( $someObject[$x]->name ))
-			  {
-				$name    = $someObject[$x]->name;
-			  }
-  			  if(isset( $someObject[$x]->phone ))
-			  {
-				$phone   = $someObject[$x]->phone;
-			  }
+			  $name = $someObject[$x]->name;
+			  $phone = $someObject[$x]->phone;
 
 			  $userContactsObj -> user_id = $user_id;
 			  $userContactsObj -> name = $name;
@@ -634,12 +620,9 @@ function sendHeartNotification($sendHeartDetails)
 			//echo json_encode($temp);
 			
 			$userContactsObj = new stdClass();
+			$user_id = $contacts -> user_id;
 
-			if((isset($userObj -> user_id)))
-			{
-				$user_id = $contacts -> user_id;
-				$this->GetRegisteredContact($userContactsObj);
-			}
+			$this->GetRegisteredContact($userContactsObj);
 
 			if($size ==0)
 			{
@@ -647,26 +630,26 @@ function sendHeartNotification($sendHeartDetails)
 			}
 }
 
+/*
+select 
+tbl_users.id as user_id,tbl_users.name,concat(tbl_users.country_code,tbl_users.mobile) as phone from tbl_users, tbl_user_contacts as tc
+where tc.user_id ='{$userObj -> user_id}' AND concat(country_code,mobile) like CONCAT('%', tc.contact_number, '%') AND length(contact_name) > 5
+*/
 // getting resgistered from contact list of given user
 	function GetRegisteredContact($userObj)
 	{
 		if(!$userObj)
 		{
-			echo "GetRegisteredContact --> Incorrect Parameter";
-			return;
-		}
-
-		if(!(isset($userObj -> user_id)))
-		{
-			echo "GetRegisteredContact User ID Missing --> Incorrect Parameter";
+			echo "Incorrect Parameter";
 			return;
 		}
 
 		$m = new MySQL5();
+
 		$query = "select tbl_users.id as user_id,tbl_users.name,concat(tbl_users.country_code,tbl_users.mobile) as phone from tbl_users, tbl_user_contacts as tc where concat(country_code,mobile) like CONCAT('%', tc.contact_number, '%') and tc.user_id ='{$userObj -> user_id}'";
 
 		$query = "select tbl_users.id as user_id,tbl_users.name,concat(tbl_users.country_code,tbl_users.mobile) as phone from tbl_users, tbl_user_contacts as tc
-		where tc.user_id ='{$userObj -> user_id}' AND concat(country_code,mobile) like CONCAT('%', tc.contact_number, '%') AND length(contact_name) > 0 and tc.user_id <> tbl_users.id";
+		where tc.user_id ='{$userObj -> user_id}' AND concat(country_code,mobile) like CONCAT('%', tc.contact_number, '%') AND length(contact_name) > 5"
 
 		$contacts = $m -> executeQuery($query,'select');
 		$contactlist['status']=1;
@@ -678,7 +661,6 @@ function sendHeartNotification($sendHeartDetails)
 // Code to send Notification to the User 
 function callerNotification($callNotificationDetail)
 {
-
 	if(!$callNotificationDetail)
 	{
 		echo "callerNotification -->Incorrect Parameter";
@@ -689,9 +671,6 @@ function callerNotification($callNotificationDetail)
 	$receiver_phone = $callNotificationDetail -> receiver_phone;
 	$message	= $callNotificationDetail -> message;	
 
-	print("Sender ID".$senderid);
-	print("Sender ID".$receiver_phone);
-	print("Sender ID".$message);
 
 	$m = new MySQL5();
 

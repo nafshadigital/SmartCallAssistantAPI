@@ -66,10 +66,7 @@ class SmartCallRestHandler extends SimpleRest
 		
 		$otpQuery = "select FLOOR(RAND() * 8997.00+ 100000)";
 		$otp = $m -> executeScalar($otpQuery);
-
-		$otp = "100786";
 		$resultSignUpObj -> otp = $otp;
-
 		if($isExists == 0)
 		{
 			$query = "insert into tbl_verification_code ( 	user_id, verification_code, created_date	 ) values ( 	'{$resultSignUpObj -> user_id}', '$otp', '".date('Y-m-d H:i:s')."'	 )";
@@ -164,10 +161,11 @@ class SmartCallRestHandler extends SimpleRest
 			
 			if($development == 1)
 			{
-				echo "Addcontact --> Incorrect Parameter";
+				echo "Incorrect Parameter";
 				return;
 			}
 
+			echo "Setting Parameter";
 			$userContactsObj = new stdClass();
 			$userContactsObj -> phone = "919443023965";
 			$userContactsObj -> user_id = "210";
@@ -181,6 +179,7 @@ class SmartCallRestHandler extends SimpleRest
 		$query = "select concat(country_code,mobile) from tbl_users where concat(country_code,mobile) = '+{$userContactsObj -> phone}' and length(fcm_token) > 10";
 		$phone_number = $m -> executeScalar($query);
 
+		echo "Registered = ". $phone_number. " Query = ".$query;
 
 		$registered = 0;
 		if(strlen($phone_number) > 8)
@@ -191,6 +190,17 @@ class SmartCallRestHandler extends SimpleRest
 		$query = "select count(id) from tbl_user_contacts where user_id='{$userContactsObj -> user_id}' and contact_number ='{$userContactsObj -> phone}'";
 		$isAlreadyExist = $m -> executeScalar($query);
 
+		echo $query;
+		echo "Already Exist".$isAlreadyExist;
+
+		if($isAlreadyExist == 0)
+		{
+			echo "Already";
+		}
+		else
+		{
+			echo "Not Reached";
+		}
 
 		if($isAlreadyExist == 0)
 		{
@@ -199,6 +209,9 @@ class SmartCallRestHandler extends SimpleRest
 
 			$inserted_id = $m -> executeQuery($query,'insert');
 			$id = $inserted_id;
+
+			echo $query;
+			echo $inserted_id;
 
 			if(strlen($phone_number) > 8)
 			{
@@ -212,10 +225,12 @@ class SmartCallRestHandler extends SimpleRest
 		}
 
 		$resultSupportObj -> PartnerTrueByPhone = $registered;	
-		$resultSupportObj -> message = "Already Exist as ";
+		$resultSupportObj -> message = "Already Exist as ".$isAlreadyExist;
 
-		return $resultSupportObj;
+		$this -> output($resultSupportObj);
 
+		//$myJSON = json_encode($resultSupportObj);
+		//echo $myJSON;
 	}
 
 	function createSupport($createSupportObj)
@@ -449,86 +464,20 @@ function sendHeart($userObj)
 	$this -> output($resultSignUpObj);
 }
 
-//Toseef's Code
-function sendHeartNotification($sendHeartDetails)
+function sendHeartNotification($senderid,$receiverid)
 {
-	if(!$sendHeartDetails)
-	{
-		echo "Incorrect Parameter";
-		return;
-	}
-
-	$senderid	= $sendHeartDetails -> sender_id;
-	$receiver_phone = $sendHeartDetails -> receiver_phone;
-
 	$m = new MySQL5();
-
-
-	$query = "select name from tbl_users where id=$senderid";
-	$sender_name = $m -> executeScalar($query);
-
-	$query = "select concat(country_code,mobile) as mobile from tbl_users where id=$senderid";
-	$sender_phone = $m -> executeScalar($query);
-
-
-	$query = "select id from tbl_users where concat(country_code,mobile)='$receiver_phone'";
-	$receiverid = $m -> executeScalar($query);
-
-
-	$userContactsObj = new stdClass();
-	$userContactsObj -> phone = $sender_phone;
-	$userContactsObj -> name = $sender_name;
-	$userContactsObj -> user_id = $receiverid;
-	$ignore = $this->addContact($userContactsObj);
-
-
-	if($senderid == $receiverid)
-	{
-		$resultObj -> message = "You cannot send heart to yourself !";
-		$this -> output($resultObj);
-		return;
-	}
-
-
+	$title = "Title ";
+	$body= "Body ";
 	$url = "https://fcm.googleapis.com/fcm/send";
-
-	$resultObj = new stdClass();
-	$resultObj -> status = 0;
-
-
-	if(strlen($sender_name) < 2)
-	{
-		$query = "select concat(country_code,mobile) from tbl_users where id='$senderid'";
-		$sender_name = $m -> executeScalar($query);
-		if(strlen($sender_name) < 2)
-		{
-		$resultObj -> status   = 0;
-		$resultObj -> message  = "Wrong sender !";
-		$this -> output($resultObj);
-		return;
-		}
-
-	}
-
-	$title = "You received Heart";
-	$body= $sender_name." sent you heart";
-
-	echo $sender_name;
-
+		$resultObj = new stdClass();
+		$resultObj -> status = 0;
 	//getting fcm tokens of receiver
-	$query = "select fcm_token from tbl_users where id='$receiverid' ";
-	$receiver_fcm = $m -> executeScalar($query);
-
-	if(strlen($receiver_fcm) < 10)
-	{
-		$resultObj -> message = "User not registered with Smart Call Assistant !".$receiverid;
-		$this -> output($resultObj);
-		return;
-	}
-	
+		$query = "select fcm_token from tbl_users where id='$receiverid' ";
+		$receiver_fcm = $m -> executeScalar($query);
 	//updating heart of receiver	
-	$query = "update tbl_users set heart = heart + 1 where id='$receiverid'";
-	$m -> executeQuery($query,'update');
+		$query = "update tbl_users set heart = heart + 1 where id='$receiverid'";
+		$m -> executeQuery($query,'update');
 	
 	//sending notification
 
@@ -561,249 +510,19 @@ function sendHeartNotification($sendHeartDetails)
 		$resultObj -> status = 0;
 		$resultObj -> response = $error;
 	}else{
-
-		$res = json_decode($res, true);
-
-
-		$resultObj -> status   = 1;
-		$resultObj -> success  = $res['success'];
-    	$resultObj -> failure  = $res['failure'];
-		$resultObj -> multicast_id = $res['multicast_id'];
-		$resultObj -> message  = "Heart Sent Successfully ! from ".$sender_name." to the userid".$receiverid;
+		$resultObj -> status = 1;
+    	$resultObj -> response  = $res;
 		
 	} 
 	//entering notification data
 	$query = "insert into tbl_messages (sender,receiver, datetime) values ('$senderid', '$receiverid', curdate())";
 	//echo $query;
 	$inserted_id = $m -> executeQuery($query,'insert');
-
+	$resultObj -> message  = "Send Heart Successful !";
 	$this -> output($resultObj);
 }
 
-	function addMultiContacts($contacts)
-	{
-		if(!$contacts)
-		{
-			echo "addMultiContacts --> Incorrect Parameter";
-			return;
-		}
-
-//	    $contactsarray=json_decode($contacts,true);
-
-		$contactObject = new stdClass();
-		$contactObject = $contacts;
-		
-   	    if(isset( $contacts -> user_id ))		
-		{
-			$user_id = $contacts -> user_id;
-		}
-
-	    if(isset( $contacts -> contact_size ))
-		{
-			$size    = $contacts -> contact_size;
-		}
-
-		$temp = new stdClass();
-
-		$someObject = $contacts -> contacts;
-
-		
-		for ($x = 0; $x <= sizeof($someObject); $x++)
-		{
-
-			  $userContactsObj = new stdClass();
-		      $user_id = $contacts -> user_id;
-
-			  if(isset( $someObject[$x]->name ))
-			  {
-				$name    = $someObject[$x]->name;
-			  }
-  			  if(isset( $someObject[$x]->phone ))
-			  {
-				$phone   = $someObject[$x]->phone;
-			  }
-
-			  $userContactsObj -> user_id = $user_id;
-			  $userContactsObj -> name = $name;
-			  $userContactsObj -> phone = $phone;
 
 
-			  $temp -> message =  $this->addContact($userContactsObj);
-		} 
-
-			//echo json_encode($temp);
-			
-			$userContactsObj = new stdClass();
-
-			if((isset($userObj -> user_id)))
-			{
-				$user_id = $contacts -> user_id;
-				$this->GetRegisteredContact($userContactsObj);
-			}
-
-			if($size ==0)
-			{
-				echo "List is empty".$size."...".$user_id;
-			}
-}
-
-// getting resgistered from contact list of given user
-	function GetRegisteredContact($userObj)
-	{
-		if(!$userObj)
-		{
-			echo "GetRegisteredContact --> Incorrect Parameter";
-			return;
-		}
-
-		if(!(isset($userObj -> user_id)))
-		{
-			echo "GetRegisteredContact User ID Missing --> Incorrect Parameter";
-			return;
-		}
-
-		$m = new MySQL5();
-		$query = "select tbl_users.id as user_id,tbl_users.name,concat(tbl_users.country_code,tbl_users.mobile) as phone from tbl_users, tbl_user_contacts as tc where concat(country_code,mobile) like CONCAT('%', tc.contact_number, '%') and tc.user_id ='{$userObj -> user_id}'";
-
-		$query = "select tbl_users.id as user_id,tbl_users.name,concat(tbl_users.country_code,tbl_users.mobile) as phone from tbl_users, tbl_user_contacts as tc
-		where tc.user_id ='{$userObj -> user_id}' AND concat(country_code,mobile) like CONCAT('%', tc.contact_number, '%') AND length(contact_name) > 0 and tc.user_id <> tbl_users.id";
-
-		$contacts = $m -> executeQuery($query,'select');
-		$contactlist['status']=1;
-		$contactlist['list']=$contacts;
-		echo json_encode($contactlist);
-		
-	}
-
-// Code to send Notification to the User 
-function callerNotification($callNotificationDetail)
-{
-
-	if(!$callNotificationDetail)
-	{
-		echo "callerNotification -->Incorrect Parameter";
-		return;
-	}
-
-	$senderid	= $callNotificationDetail -> sender_id;
-	$receiver_phone = $callNotificationDetail -> receiver_phone;
-	$message	= $callNotificationDetail -> message;	
-
-	print("Sender ID".$senderid);
-	print("Sender ID".$receiver_phone);
-	print("Sender ID".$message);
-
-	$m = new MySQL5();
-
-
-	$query = "select id from tbl_users where concat(country_code,mobile)='$receiver_phone'";
-	$receiverid = $m -> executeScalar($query);
-
-	//getting fcm tokens of receiver
-	$query = "select fcm_token from tbl_users where id='$receiverid' ";
-	$receiver_fcm = $m -> executeScalar($query);
-
-	if(strlen($receiver_fcm) < 10)
-	{
-		$resultObj -> message = "User not registered with Smart Call Assistant !".$receiverid;
-		$this -> output($resultObj);
-		return;
-	}
-
-
-	$query = "select name from tbl_users where id=$senderid";
-	$sender_name = $m -> executeScalar($query);
-
-	$query = "select concat(country_code,mobile) as mobile from tbl_users where id=$senderid";
-	$sender_phone = $m -> executeScalar($query);
-
-
-
-
-	$userContactsObj = new stdClass();
-	$userContactsObj -> phone = $sender_phone;
-	$userContactsObj -> name = $sender_name;
-	$userContactsObj -> user_id = $receiverid;
-	$ignore = $this->addContact($userContactsObj);
-
-
-	if($senderid == $receiverid)
-	{
-		$resultObj -> message = "You cannot send heart to yourself !";
-		$this -> output($resultObj);
-		return;
-	}
-
-
-	$url = "https://fcm.googleapis.com/fcm/send";
-
-	$resultObj = new stdClass();
-	$resultObj -> status = 0;
-
-
-	if(strlen($sender_name) < 2)
-	{
-		$query = "select concat(country_code,mobile) from tbl_users where id='$senderid'";
-		$sender_name = $m -> executeScalar($query);
-		if(strlen($sender_name) < 2)
-		{
-		$resultObj -> status   = 0;
-		$resultObj -> message  = "Wrong sender !";
-		$this -> output($resultObj);
-		return;
-		}
-
-	}
-
-	$title = $sender_name." is not available !";
-	$body= $message;
-
-	echo $sender_name;
-
-	
-	//sending notification
-
-	$ch	= curl_init($url);
-	$header = array();
-	$header[] = 'Content-type: application/json';
-	$authkey="AAAAiMVyMTg:APA91bHR8sFvG509lmNgcvaqdM6G9yTf0IdFtuxlvqY1oBnAqbqtjoOHn2j5Zd8lvTaxap8Gs8j9Zpl3GwAB-qMZ7xmG2X8E988DV8WcG-Kk7FF0G-tu5ksPZwP172MuN_LO6m6PpA5g";
-	$header[] = 'Authorization: key=' . $authkey;
-
-	curl_setopt($ch, CURLOPT_CUSTOMREQUEST, 'POST');
-
-	$data = [
-	  'to' => $receiver_fcm,
-	  'notification' => [
-		'title' => $title,
-		'body' => $body
-	  ]
-	];
-
-	curl_setopt($ch, CURLOPT_HTTPHEADER,$header);
-	curl_setopt($ch, CURLOPT_POST,true);
-	curl_setopt($ch, CURLOPT_POSTFIELDS, json_encode( $data ) );
-	curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
-
-	$res = curl_exec($ch);
-	$err = curl_error($ch);
-	curl_close($ch);
-	if ($err) 
-	{
-		$resultObj -> status = 0;
-		$resultObj -> response = $error;
-	}else{
-
-		$res = json_decode($res, true);
-
-		$resultObj -> status   = 1;
-		$resultObj -> success  = $res['success'];
-	    	$resultObj -> failure  = $res['failure'];
-		$resultObj -> multicast_id = $res['multicast_id'];
-		$resultObj -> message  = "Message".$message." about the ".$sender_name." sent succesfully !".$receiver_fcm;
-		
-	} 
-
-	$this -> output($resultObj);
-}
 }
 ?>

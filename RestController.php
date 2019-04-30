@@ -121,5 +121,11 @@ switch($view){
 		$smartCallRestHandler -> addMultiContacts($requestObj);
 	break;
 
+	case "CALLER_NOTIFICATION":
+		$smartCallRestHandler = new SmartCallRestHandler();
+		$smartCallRestHandler -> callerNotification($requestObj);
+	break;
+
+
 }
 ?>
