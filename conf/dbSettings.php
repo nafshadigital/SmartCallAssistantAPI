@@ -6,11 +6,11 @@
 
 	define("server"	,	"localhost");
 
-	define("db_username"	, 	"root");
+	define("db_username"	, 	"waheed_sca_admin");
 
-	define("db_password" ,	"");
+	define("db_password" ,	"nafsha152808");
 
-	define("database"	,	"smartcallassistant");
+	define("database"	,	"waheed_sca");
 
 /* ---------- LIVE ---------- 
 

@@ -21,8 +21,8 @@ class SmartCallLogin extends SimpleRest
 		$resultSignUpObj -> status = 0;
 		
 		$query = "select count(id) isExists, id from tbl_users where android_id = '{$signUpObj -> android_id}' and device_id = '{$signUpObj -> device_id}'";
-		$res = $m -> executeQuery($query);
-		$row = mysql_fetch_object($res);
+		$row = $m -> executeQuery($query,'select');
+		//$row = mysql_fetch_object($res);
 		if($row -> isExists > 0)
 		{
 			$resultSignUpObj -> status = "1";
@@ -32,10 +32,10 @@ class SmartCallLogin extends SimpleRest
 		else
 		{
 			$query = "insert into tbl_users (android_id, device_id, created_date) value ('{$signUpObj -> android_id}','{$signUpObj -> device_id}', '".date('Y-m-d')."')";
-			$m -> executeQuery($query);
+			$inserted_id = $m -> executeQuery($query,'insert');
 			
 			$resultSignUpObj -> status = "1";
-			$resultSignUpObj -> user_id = mysql_insert_id();
+			$resultSignUpObj -> user_id = $inserted_id;
 			$resultSignUpObj -> message = "Sign Up Success";
 		}
 		$this -> output($resultSignUpObj);

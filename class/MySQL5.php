@@ -1,35 +1,28 @@
 <?php
 
-	////////////////////////////////////////////////////////////////////////////////////////////
-	/////////////////////////////////////	DATABASE INTERACTION	////////////////////////////
-	/////////////////////////////////////	CREATED BY KARTHICK.S	////////////////////////////
-	/////////////////////////////////////		ON 12-May-2009		////////////////////////////
-	////////////////////////////////////////////////////////////////////////////////////////////
-	////////////////////////////////////////////////////////////////////////////////////////////
+$ds = DIRECTORY_SEPARATOR;
+$base_dir = realpath(dirname(__FILE__)  . $ds . '..') . $ds;
+require_once("{$base_dir}conf{$ds}dbSettings.php");
 
-include_once "conf/dbSettings.php";
 
-class MySQL
+class MySQL5
 
 {
 
 	var $db;	
 
-	
-
 	//==============================	Function to Connect to Database ======================//
 
-	
 
 	function connect()
 
 	{
 
-		$this->db	=	mysql_pconnect(server,db_username,db_password);
+		$this->db	=	mysqli_connect(server,db_username,db_password);
 
 		
 
-		mysql_select_db(database,$this->db);
+		mysqli_select_db($this->db,database);
 
 		
 
@@ -61,7 +54,7 @@ class MySQL
 
 	{
 
-		mysql_close($this->db);
+		mysqli_close($this->db);
 
 		
 
@@ -209,7 +202,7 @@ class MySQL
 
 	
 
-		mysql_query("update $table set $field where $whrCondt",$this->db);
+		mysqli_query($this->db,"update $table set $field where $whrCondt");
 
 		
 
@@ -219,7 +212,7 @@ class MySQL
 
 	
 
-		mysql_query("insert into $table($field) values($value)",$this->db);
+		mysqlii_query("insert into $table($field) values($value)",$this->db);
 
 		
 
@@ -247,8 +240,8 @@ class MySQL
 
 		
 
-		$objData = mysql_query($qry,$this->db);
-		$this -> sendErrorToDeveloper($qry);
+		$objData = mysqli_query($this->db,$qry);
+		$this -> sendErrorToDeveloper($qry,$this->db);
 		
 
 		return $objData;
@@ -257,18 +250,57 @@ class MySQL
 
 	
 
-	public function executeQuery($qry)
+	public function executeQuery($qry,$type=NULL)
 	{
 
 		$this -> tryToConnect();
 
+		$objData = mysqli_query($this->db,$qry);
+		
+		$this -> sendErrorToDeveloper($qry,$this->db);
 		
 
-		$objData = mysql_query($qry,$this->db);
-		$this -> sendErrorToDeveloper($qry);
+		if($type=="insert"){
+
 		
-		//$this -> tryToDisConnect(); when we enable this line, can't get last inset id
-		return $objData;
+		$rowid = mysqli_insert_id($this->db);
+		$this -> tryToDisConnect(); //when we enable this line, can't get last inset id
+
+		return $rowid;
+
+		
+		}
+		elseif($type=="select")
+		{
+		
+		$arr = array();
+
+			while($row = mysqli_fetch_assoc($objData)) {
+
+				$arr[] = $row;
+
+			}
+		$this -> tryToDisConnect(); //when we enable this line, can't get last inset id
+		return $arr;
+		
+		}elseif($type=="update")
+			{
+			
+			
+			}
+			else{
+
+			$objRow =0;
+	
+			if(mysqli_num_rows($objData) > 0 ){
+
+			$objRow = mysqli_fetch_array($objData);
+			}
+    
+			$this -> tryToDisConnect(); //when we enable this line, can't get last inset id
+
+	    	return $objRow;
+		}
 
 	}
 
@@ -288,11 +320,11 @@ class MySQL
 
 		
 
-		$objData = mysql_query($qry,$this->db);
-		$this -> sendErrorToDeveloper($qry);
+		$objData = mysqli_query($this->db,$qry);
+		$this -> sendErrorToDeveloper($qry,$this->db);
 		
 
-		$objRow = mysql_fetch_array($objData);
+		$objRow = mysqli_fetch_array($objData);
 
 		
 
@@ -318,13 +350,11 @@ class MySQL
 		$this -> tryToConnect();
 
 
-		$objData = mysql_query($qry,$this->db);
-		$this -> sendErrorToDeveloper($qry);
+		$objData = mysqli_query($this->db,$qry);
+		$this -> sendErrorToDeveloper($qry,$this->db);
 		
-		if(!is_resource($objData))
-		    return NULL;
 			
-		$objRow = mysql_fetch_array($objData);
+		$objRow = mysqli_fetch_array($objData);
 		
 
 		//$this -> tryToDisConnect(); when we enable this line, can't get last inset id
@@ -335,7 +365,7 @@ class MySQL
 
 	public function getLastInsertId()
 	{
-		return mysql_insert_id($this -> db);
+		return mysqli_insert_id($this -> db);
 	}
 	
 
@@ -351,22 +381,22 @@ class MySQL
 
 		
 
-		$objData = mysql_query($qry,$this->db);
+		$objData = mysqli_query($qry,$this->db);
 
-		$this -> sendErrorToDeveloper($qry);
+		$this -> sendErrorToDeveloper($qry,$this->db);
 
 		//$this -> tryToDisConnect();
 
 		
 
-		return mysql_num_rows($objData);
+		return mysqli_num_rows($objData);
 	}
 	
 	
-	function sendErrorToDeveloper($query) {
+	function sendErrorToDeveloper($query,$db) {
 		
-		$errorNo = mysql_errno();
-		$errorMessage = mysql_error();
+		$errorNo = mysqli_errno($db);
+		$errorMessage = mysqli_error($db);
 		
 		if($errorNo || $errorMessage) {
 			echo "<h1>Query Error $errorNo $errorMessage</h1>";
@@ -379,11 +409,11 @@ class MySQL
 							<h2>Hi Developer,</h2>
 							<table><tr><th>Error No</th><td>$errorNo</td></tr><tr><th>Error Message</th><td>$errorMessage</td></tr><tr><th>Query</th><td><pre>$query</pre></td></tr></table>
 							<br />Thanks,<br />
-							<b>Smart Call Assistant</b>
+							<b>SmartCall Assistant</b>
 							</body>
 							</html>";
 							
-			$headers = "From: SmartCall Assistant Software <no-reply@gmail.com>\r\n";  
+			$headers = "From: SmartCall Assistant <no-reply@gmail.com>\r\n";  
 			$headers .= "Reply-To: no-reply@gmail.com\r\n";  
 			$headers .= "MIME-Version: 1.0\r\n"; 
 			$headers .= "Content-Type: text/html; charset=ISO-8859-1\r\n";
