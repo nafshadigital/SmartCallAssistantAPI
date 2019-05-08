@@ -815,7 +815,7 @@ function sendHeart($userObj)
 	$this -> output($resultSignUpObj);
 }
 
-//Toseef's Code 123123
+//Toseef's Code 
 function sendHeartNotification($sendHeartDetails)
 {
 
@@ -895,6 +895,7 @@ function sendHeartNotification($sendHeartDetails)
 
 
 	$url = "https://fcm.googleapis.com/fcm/send";
+
 
 	$resultObj -> status = 0;
 
@@ -1364,8 +1365,6 @@ function countContacts($userObj){
 		$this -> output($resObj);
 		return;
 	}
-	
-
 
 	$m = new MySQL5();
 	$query = "select count(id) from tbl_user_contacts where user_id = '{$userObj -> user_id}'";
@@ -1375,8 +1374,42 @@ function countContacts($userObj){
 	$this -> output($resObj);
 }
 
-function isUserExist($user_id){
+// Debuggin Purpose
+function saveLogs($userObj)
+{
+	if(!$userObj)
+	{
+		$resObj = $util -> missingParam();
+		$this -> output($resObj);
+		return;
+	}
+	if(property_exists($userObj,'user_id'))
+	{
+ 		$userid = $userObj -> user_id;
+		if(!$this->isUserExist($userid))
+		{
+		 
+			$resObj = $util -> inValidUser();
+			$this -> output($resObj);
+			return;
+		}		
+	}
 
+	$m = new MySQL5();
+	$resultSupportObj = new stdClass();
+	
+	$query = "insert into tbl_logs (user_id, message) values ('{$userObj -> user_id}', '{$userObj -> message}')";
+	$inserted_id = $m -> executeQuery($query,'insert');
+			
+	$resultSignUpObj -> status = "1";
+	$resultSignUpObj -> user_id = $inserted_id;
+	$resultSignUpObj -> message = "Log added";
+
+	$this -> output($resultSignUpObj);
+
+
+}
+function isUserExist($user_id){
 
 	$m = new MySQL5();
 	$query = "select count(*) from tbl_users where id = '$user_id'";

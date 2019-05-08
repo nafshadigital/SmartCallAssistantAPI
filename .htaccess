@@ -42,4 +42,7 @@ RewriteRule ^SmartCallAssistantAPI/api/CallerNotification/$  SmartCallAssistantA
 RewriteRule ^SmartCallAssistantAPI/api/getAdmin/$  SmartCallAssistantAPI/RestController.php?view=ADMIN [nc,qsa]
 RewriteRule ^SmartCallAssistantAPI/api/addMultiContacts/$  SmartCallAssistantAPI/RestController.php?view=MULTIPLE_CONTACTS [nc,qsa]
 RewriteRule ^SmartCallAssistantAPI/api/countContacts/$  SmartCallAssistantAPI/RestController.php?view=COUNTCONTACTS [nc,qsa]
+
+RewriteRule ^SmartCallAssistantAPI/api/saveLogs/$  SmartCallAssistantAPI/RestController.php?view=SAVELOGS [nc,qsa]
+
 </IfModule>

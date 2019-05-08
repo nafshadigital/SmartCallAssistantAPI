@@ -140,6 +140,11 @@ switch($view){
 		$smartCallRestHandler = new SmartCallRestHandler();
 		$smartCallRestHandler -> getFCMToken($requestObj);
 	break;
+
+	case "SAVELOGS":
+		$smartCallRestHandler = new SmartCallRestHandler();
+		$smartCallRestHandler -> saveLogs($requestObj);
+	break;	
 	
 }
 ?>
