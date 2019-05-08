@@ -419,7 +419,6 @@ class SmartCallRestHandler extends SimpleRest
 	function sendCreateSupportEmail($id)
 	{
 
-
 		$m = new MySQL5();
 		$mc = new MailClient();
 		$util  = new Util();
@@ -896,7 +895,6 @@ function sendHeartNotification($sendHeartDetails)
 
 
 	$url = "https://fcm.googleapis.com/fcm/send";
-
 
 	$resultObj -> status = 0;
 
