@@ -1,0 +1,919 @@
+{
+	"info": {
+		"_postman_id": "d5742baa-e07d-4213-bdc7-9be1c7141970",
+		"name": "Al Hiba SmartCallAssistant",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "AlHiba Corrections",
+			"item": [
+				{
+					"name": "sendNotify",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"type": "text",
+								"value": "application/json"
+							},
+							{
+								"key": "Authorization",
+								"type": "text",
+								"value": "Bearer eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiIzMiIsImlhdCI6MTUzNTIwODQ5MiwiZXhwIjoxNTM1ODEzMjkyfQ.3HOTxkEiUe2EE7fiApGnk-0OT2rfkiPhS9bPH269tbNDXcvbSgMXVvgU835zMsSq8yCuHTw-jXjEUMjYBOhGxw"
+							},
+							{
+								"key": "Basic-Auth",
+								"type": "text",
+								"value": "Basic SFVCVU46aHVidW5kZXYh"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n\t\"phone_number\": \"9894695840\",\n\t\"user_id\": \"177\",\n\t\"message\": \"How are you doing ?\"\n}"
+						},
+						"url": {
+							"raw": "http://www.alhiba-me.com/SmartCallAssistantAPI/api/sendNotify/",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"path": [
+								"SmartCallAssistantAPI",
+								"api",
+								"sendNotify",
+								""
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "sendRandomHeart",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"type": "text",
+								"value": "application/json"
+							},
+							{
+								"key": "Authorization",
+								"type": "text",
+								"value": "Bearer eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiIzMiIsImlhdCI6MTUzNTIwODQ5MiwiZXhwIjoxNTM1ODEzMjkyfQ.3HOTxkEiUe2EE7fiApGnk-0OT2rfkiPhS9bPH269tbNDXcvbSgMXVvgU835zMsSq8yCuHTw-jXjEUMjYBOhGxw"
+							},
+							{
+								"key": "Basic-Auth",
+								"type": "text",
+								"value": "Basic SFVCVU46aHVidW5kZXYh"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n\t\"id\": 253\n}"
+						},
+						"url": {
+							"raw": "http://www.alhiba-me.com/SmartCallAssistantAPI/api/sendRandomHeart/",
+							"protocol": "http",
+							"host": [
+								"www",
+								"alhiba-me",
+								"com"
+							],
+							"path": [
+								"SmartCallAssistantAPI",
+								"api",
+								"sendRandomHeart",
+								""
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Send fcm notification",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"type": "text",
+								"value": "application/json"
+							},
+							{
+								"key": "Authorization",
+								"type": "text",
+								"value": "Bearer eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiIzMiIsImlhdCI6MTUzNTIwODQ5MiwiZXhwIjoxNTM1ODEzMjkyfQ.3HOTxkEiUe2EE7fiApGnk-0OT2rfkiPhS9bPH269tbNDXcvbSgMXVvgU835zMsSq8yCuHTw-jXjEUMjYBOhGxw"
+							},
+							{
+								"key": "Basic-Auth",
+								"type": "text",
+								"value": "Basic SFVCVU46aHVidW5kZXYh"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n\t\n\t\"sender_id\": 253,\n\t\"receiver_phone\": \"98984545\"\n\t\n}"
+						},
+						"url": {
+							"raw": "http://www.alhiba-me.com/SmartCallAssistantAPI/api/sendHeart/",
+							"protocol": "http",
+							"host": [
+								"www",
+								"alhiba-me",
+								"com"
+							],
+							"path": [
+								"SmartCallAssistantAPI",
+								"api",
+								"sendHeart",
+								""
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "send_notification",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"type": "text",
+								"value": "application/json"
+							},
+							{
+								"key": "Authorization",
+								"type": "text",
+								"value": "Bearer eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiIzMiIsImlhdCI6MTUzNTIwODQ5MiwiZXhwIjoxNTM1ODEzMjkyfQ.3HOTxkEiUe2EE7fiApGnk-0OT2rfkiPhS9bPH269tbNDXcvbSgMXVvgU835zMsSq8yCuHTw-jXjEUMjYBOhGxw"
+							},
+							{
+								"key": "Basic-Auth",
+								"type": "text",
+								"value": "Basic SFVCVU46aHVidW5kZXYh"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n\t\"email\": \"103020\",\n\t\"id\": 253,\n\t\"name\": \"Prakash\",\n\tdevice_id: \"12312309123\",\n\tandroid_id: \"23042o34234\"\n}"
+						},
+						"url": {
+							"raw": "http://www.alhiba-me.com/SmartCallAssistantAPI/api/send_notification/",
+							"protocol": "http",
+							"host": [
+								"www",
+								"alhiba-me",
+								"com"
+							],
+							"path": [
+								"SmartCallAssistantAPI",
+								"api",
+								"send_notification",
+								""
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "getmaxid",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"type": "text",
+								"value": "application/json"
+							},
+							{
+								"key": "Authorization",
+								"type": "text",
+								"value": "Bearer eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiIzMiIsImlhdCI6MTUzNTIwODQ5MiwiZXhwIjoxNTM1ODEzMjkyfQ.3HOTxkEiUe2EE7fiApGnk-0OT2rfkiPhS9bPH269tbNDXcvbSgMXVvgU835zMsSq8yCuHTw-jXjEUMjYBOhGxw"
+							},
+							{
+								"key": "Basic-Auth",
+								"type": "text",
+								"value": "Basic SFVCVU46aHVidW5kZXYh"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n\n\t\"user_id\": 253\n\n}"
+						},
+						"url": {
+							"raw": "http://www.alhiba-me.com/SmartCallAssistantAPI/api/getmaxid/",
+							"protocol": "http",
+							"host": [
+								"www",
+								"alhiba-me",
+								"com"
+							],
+							"path": [
+								"SmartCallAssistantAPI",
+								"api",
+								"getmaxid",
+								""
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Support",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"type": "text",
+								"value": "application/json"
+							},
+							{
+								"key": "Authorization",
+								"type": "text",
+								"value": "Bearer eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiIzMiIsImlhdCI6MTUzNTIwODQ5MiwiZXhwIjoxNTM1ODEzMjkyfQ.3HOTxkEiUe2EE7fiApGnk-0OT2rfkiPhS9bPH269tbNDXcvbSgMXVvgU835zMsSq8yCuHTw-jXjEUMjYBOhGxw"
+							},
+							{
+								"key": "Basic-Auth",
+								"type": "text",
+								"value": "Basic SFVCVU46aHVidW5kZXYh"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n\t\"user_id\": \"178\",\n\t\"message\": \"This is test message\"\n\n}"
+						},
+						"url": {
+							"raw": "http://www.alhiba-me.com/SmartCallAssistantAPI/api/support/",
+							"protocol": "http",
+							"host": [
+								"www",
+								"alhiba-me",
+								"com"
+							],
+							"path": [
+								"SmartCallAssistantAPI",
+								"api",
+								"support",
+								""
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "1.Signup",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"name": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n\t\"mobile\" : \"99442233341\",\n\t\"country_code\" : \"+91\"\n}"
+				},
+				"url": {
+					"raw": "http://www.alhiba-me.com/SmartCallAssistantAPI/api/signUp/",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"path": [
+						"SmartCallAssistantAPI",
+						"api",
+						"signUp",
+						""
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Google Notification",
+			"request": {
+				"auth": {
+					"type": "noauth"
+				},
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"name": "Content-Type",
+						"type": "text",
+						"value": "application/json"
+					},
+					{
+						"key": "Authorization",
+						"value": "key=AAAAiMVyMTg:APA91bF-06ZYTiaOcS_pKQljWFZ3mZUOl9QXTCsDxUKmmqouay86LofGf85DiE6cSutcYw7WR8fR0LzPOUiXDTgwjg8Y7bAp-2fFp1lrZGxDMGG_nH3a_5lMe0YaNMi4v-4SZil4teNY",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n \"to\" : \"d00Kho4fsP4:APA91bGDCYWCyIpsVrewCaOBcUuSoykPQeA9zhKrXqsOtbSAnaPf4zVojDU1HsfKF-impZBap5T2JVL-_FamCEs1XJ2CMh4mJ_snoOFsvRO6c9rGhlZq3pW-5fkcMTHSwaUkzBekRfqI\",\r\n \"collapse_key\" : \"type_a\",\r\n \"notification\" : {\r\n     \"body\" : \"Body of Your Notification\",\r\n     \"title\": \"Title of Your Notification\"\r\n },\r\n \"data\" : {\r\n     \"body\" : \"Body of Your Notification in Data\",\r\n     \"title\": \"Title of Your Notification in Title\",\r\n     \"key_1\" : \"Value for key_1\",\r\n     \"key_2\" : \"Value for key_2\"\r\n }\r\n}"
+				},
+				"url": {
+					"raw": "https://fcm.googleapis.com/fcm/send",
+					"protocol": "https",
+					"host": [
+						"fcm",
+						"googleapis",
+						"com"
+					],
+					"path": [
+						"fcm",
+						"send"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Get Admin Email Address",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"name": "Content-Type",
+						"type": "text",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n\t\"mobile\" : \"99442233341\",\n\t\"country_code\" : \"+91\"\n}"
+				},
+				"url": {
+					"raw": "http://www.alhiba-me.com/SmartCallAssistantAPI/api/getAdmin/",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"path": [
+						"SmartCallAssistantAPI",
+						"api",
+						"getAdmin",
+						""
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Count Contacts",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"type": "text",
+						"value": "application/json"
+					},
+					{
+						"key": "Authorization",
+						"type": "text",
+						"value": "Bearer eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiIzMiIsImlhdCI6MTUzNTIwODQ5MiwiZXhwIjoxNTM1ODEzMjkyfQ.3HOTxkEiUe2EE7fiApGnk-0OT2rfkiPhS9bPH269tbNDXcvbSgMXVvgU835zMsSq8yCuHTw-jXjEUMjYBOhGxw"
+					},
+					{
+						"key": "Basic-Auth",
+						"type": "text",
+						"value": "Basic SFVCVU46aHVidW5kZXYh"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n\n\t\"user_id\": 1\n\n}"
+				},
+				"url": {
+					"raw": "http://www.alhiba-me.com/SmartCallAssistantAPI/api/countContacts/",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"path": [
+						"SmartCallAssistantAPI",
+						"api",
+						"countContacts",
+						""
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Send Heart",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"type": "text",
+						"value": "application/json"
+					},
+					{
+						"key": "Authorization",
+						"type": "text",
+						"value": "Bearer eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiIzMiIsImlhdCI6MTUzNTIwODQ5MiwiZXhwIjoxNTM1ODEzMjkyfQ.3HOTxkEiUe2EE7fiApGnk-0OT2rfkiPhS9bPH269tbNDXcvbSgMXVvgU835zMsSq8yCuHTw-jXjEUMjYBOhGxw"
+					},
+					{
+						"key": "Basic-Auth",
+						"type": "text",
+						"value": "Basic SFVCVU46aHVidW5kZXYh"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n\t\"sender_id\": \"2\",\n\t\"receiver_phone\": \"+971508150115\"\n}"
+				},
+				"url": {
+					"raw": "http://www.alhiba-me.com/SmartCallAssistantAPI/api/sendHeart/",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"path": [
+						"SmartCallAssistantAPI",
+						"api",
+						"sendHeart",
+						""
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "CallNotification",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"type": "text",
+						"value": "application/json"
+					},
+					{
+						"key": "Authorization",
+						"type": "text",
+						"value": "Bearer eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiIzMiIsImlhdCI6MTUzNTIwODQ5MiwiZXhwIjoxNTM1ODEzMjkyfQ.3HOTxkEiUe2EE7fiApGnk-0OT2rfkiPhS9bPH269tbNDXcvbSgMXVvgU835zMsSq8yCuHTw-jXjEUMjYBOhGxw"
+					},
+					{
+						"key": "Basic-Auth",
+						"type": "text",
+						"value": "Basic SFVCVU46aHVidW5kZXYh"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n\t\"sender_id\": \"2\",\n\t\"receiver_phone\": \"+971508150115\",\n\t\"message\": \" I am at Abu Dhabi\"\n}\n"
+				},
+				"url": {
+					"raw": "http://www.alhiba-me.com/SmartCallAssistantAPI/api/CallerNotification/",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"path": [
+						"SmartCallAssistantAPI",
+						"api",
+						"CallerNotification",
+						""
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "2.GetCountry",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					},
+					{
+						"key": "Authorization",
+						"value": "Bearer eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiIzMiIsImlhdCI6MTUzNTIwODQ5MiwiZXhwIjoxNTM1ODEzMjkyfQ.3HOTxkEiUe2EE7fiApGnk-0OT2rfkiPhS9bPH269tbNDXcvbSgMXVvgU835zMsSq8yCuHTw-jXjEUMjYBOhGxw",
+						"type": "text"
+					},
+					{
+						"key": "Basic-Auth",
+						"value": "Basic SFVCVU46aHVidW5kZXYh",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": ""
+				},
+				"url": {
+					"raw": "http://www.alhiba-me.com/SmartCallAssistantAPI/api/getCountry/",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"path": [
+						"SmartCallAssistantAPI",
+						"api",
+						"getCountry",
+						""
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "3.Check OTP",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"type": "text",
+						"disabled": true
+					},
+					{
+						"key": "Authorization",
+						"value": "Bearer eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiIzMiIsImlhdCI6MTUzNTIwODQ5MiwiZXhwIjoxNTM1ODEzMjkyfQ.3HOTxkEiUe2EE7fiApGnk-0OT2rfkiPhS9bPH269tbNDXcvbSgMXVvgU835zMsSq8yCuHTw-jXjEUMjYBOhGxw",
+						"type": "text",
+						"disabled": true
+					},
+					{
+						"key": "Basic-Auth",
+						"value": "Basic SFVCVU46aHVidW5kZXYh",
+						"type": "text",
+						"disabled": true
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n\t\"verification_code\": \"103020\",\n\t\"user_id\": 253\n}"
+				},
+				"url": {
+					"raw": "http://www.alhiba-me.com/SmartCallAssistantAPI/api/checkOtp/",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"path": [
+						"SmartCallAssistantAPI",
+						"api",
+						"checkOtp",
+						""
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Get Registered Contacts",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "Bearer eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiIzMiIsImlhdCI6MTUzNTIwODQ5MiwiZXhwIjoxNTM1ODEzMjkyfQ.3HOTxkEiUe2EE7fiApGnk-0OT2rfkiPhS9bPH269tbNDXcvbSgMXVvgU835zMsSq8yCuHTw-jXjEUMjYBOhGxw",
+						"type": "text",
+						"disabled": true
+					},
+					{
+						"key": "Basic-Auth",
+						"value": "Basic SFVCVU46aHVidW5kZXYh",
+						"type": "text",
+						"disabled": true
+					},
+					{
+						"key": "Content-Type",
+						"name": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n\t\"user_id\":1\n}"
+				},
+				"url": {
+					"raw": "http://www.alhiba-me.com/SmartCallAssistantAPI/api/getRegisteredContacts/",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"path": [
+						"SmartCallAssistantAPI",
+						"api",
+						"getRegisteredContacts",
+						""
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Save Multiple Contacts",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"type": "text",
+						"disabled": true
+					},
+					{
+						"key": "Authorization",
+						"value": "Bearer eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiIzMiIsImlhdCI6MTUzNTIwODQ5MiwiZXhwIjoxNTM1ODEzMjkyfQ.3HOTxkEiUe2EE7fiApGnk-0OT2rfkiPhS9bPH269tbNDXcvbSgMXVvgU835zMsSq8yCuHTw-jXjEUMjYBOhGxw",
+						"type": "text",
+						"disabled": true
+					},
+					{
+						"key": "Basic-Auth",
+						"value": "Basic SFVCVU46aHVidW5kZXYh",
+						"type": "text",
+						"disabled": true
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n  \"contacts\": [\n   \n    {\n      \"name\": \"Aaira\",\n      \"phone\": \"9787249698\"\n    },\n    {\n      \"name\": \"Aaira\",\n      \"phone\": \"0502584526\"\n    },\n    {\n      \"name\": \"Aaira Mom\",\n      \"phone\": \"8122405019\"\n    },\n    {\n      \"name\": \"Aaira Mom\",\n      \"phone\": \"0505798892\"\n    },\n    {\n      \"name\": \"Aanya\",\n      \"phone\": \"7886678876\"\n    }\n    \n  ],\n  \"user_id\": 212,\n  \"contact_size\":10\n}"
+				},
+				"url": {
+					"raw": "http://www.alhiba-me.com/SmartCallAssistantAPI/api/addMultiContacts/",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"path": [
+						"SmartCallAssistantAPI",
+						"api",
+						"addMultiContacts",
+						""
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "4.Update Profile",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"type": "text",
+						"value": "application/json"
+					},
+					{
+						"key": "Authorization",
+						"type": "text",
+						"value": "Bearer eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiIzMiIsImlhdCI6MTUzNTIwODQ5MiwiZXhwIjoxNTM1ODEzMjkyfQ.3HOTxkEiUe2EE7fiApGnk-0OT2rfkiPhS9bPH269tbNDXcvbSgMXVvgU835zMsSq8yCuHTw-jXjEUMjYBOhGxw"
+					},
+					{
+						"key": "Basic-Auth",
+						"type": "text",
+						"value": "Basic SFVCVU46aHVidW5kZXYh"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n\t\"email\": \"prakash.kumar@gmail.com\",\n\t\"id\": \"178\",\n\t\"name\": \"Prakash\",\n\t\"device_id\": \"23fsdf234\",\n\t\"android_id\": \"23042o34234\"\n}"
+				},
+				"url": {
+					"raw": "http://www.alhiba-me.com/SmartCallAssistantAPI/api/updateAccount/",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"path": [
+						"SmartCallAssistantAPI",
+						"api",
+						"updateAccount",
+						""
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "5.Get Profile",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"type": "text",
+						"value": "application/json"
+					},
+					{
+						"key": "Authorization",
+						"type": "text",
+						"value": "Bearer eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiIzMiIsImlhdCI6MTUzNTIwODQ5MiwiZXhwIjoxNTM1ODEzMjkyfQ.3HOTxkEiUe2EE7fiApGnk-0OT2rfkiPhS9bPH269tbNDXcvbSgMXVvgU835zMsSq8yCuHTw-jXjEUMjYBOhGxw"
+					},
+					{
+						"key": "Basic-Auth",
+						"type": "text",
+						"value": "Basic SFVCVU46aHVidW5kZXYh"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n\t\n\t\"id\": \"210\",\n\t\"device_id\": \"12312309123\",\n\t\"android_id\": \"23042o34234\"\n}"
+				},
+				"url": {
+					"raw": "http://www.alhiba-me.com/SmartCallAssistantAPI/api/getprofile/",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"path": [
+						"SmartCallAssistantAPI",
+						"api",
+						"getprofile",
+						""
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Update FCM",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"type": "text",
+						"value": "application/json"
+					},
+					{
+						"key": "Authorization",
+						"type": "text",
+						"value": "Bearer eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiIzMiIsImlhdCI6MTUzNTIwODQ5MiwiZXhwIjoxNTM1ODEzMjkyfQ.3HOTxkEiUe2EE7fiApGnk-0OT2rfkiPhS9bPH269tbNDXcvbSgMXVvgU835zMsSq8yCuHTw-jXjEUMjYBOhGxw"
+					},
+					{
+						"key": "Basic-Auth",
+						"type": "text",
+						"value": "Basic SFVCVU46aHVidW5kZXYh"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n\t\"fcmtoken\": \"Sample-Sample-CI2k_HHwgIpoDKCIZvvDMExUdFQ3P1\",\n\t\"id\": \"1\"\n\n}"
+				},
+				"url": {
+					"raw": "http://www.alhiba-me.com/SmartCallAssistantAPI/api/updateFCM/",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"path": [
+						"SmartCallAssistantAPI",
+						"api",
+						"updateFCM",
+						""
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Update Last Seen",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"type": "text",
+						"value": "application/json"
+					},
+					{
+						"key": "Authorization",
+						"type": "text",
+						"value": "Bearer eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiIzMiIsImlhdCI6MTUzNTIwODQ5MiwiZXhwIjoxNTM1ODEzMjkyfQ.3HOTxkEiUe2EE7fiApGnk-0OT2rfkiPhS9bPH269tbNDXcvbSgMXVvgU835zMsSq8yCuHTw-jXjEUMjYBOhGxw"
+					},
+					{
+						"key": "Basic-Auth",
+						"type": "text",
+						"value": "Basic SFVCVU46aHVidW5kZXYh"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n\t\"user_id\": 200\n}"
+				},
+				"url": {
+					"raw": "http://www.alhiba-me.com/SmartCallAssistantAPI/api/updateLastSeen/",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"path": [
+						"SmartCallAssistantAPI",
+						"api",
+						"updateLastSeen",
+						""
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Single Add Contact",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"type": "text",
+						"value": "application/json"
+					},
+					{
+						"key": "Authorization",
+						"type": "text",
+						"value": "Bearer eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiIzMiIsImlhdCI6MTUzNTIwODQ5MiwiZXhwIjoxNTM1ODEzMjkyfQ.3HOTxkEiUe2EE7fiApGnk-0OT2rfkiPhS9bPH269tbNDXcvbSgMXVvgU835zMsSq8yCuHTw-jXjEUMjYBOhGxw"
+					},
+					{
+						"key": "Basic-Auth",
+						"type": "text",
+						"value": "Basic SFVCVU46aHVidW5kZXYh"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n\t\"phone\": \"+919894695840\",\n\t\"user_id\": \"178\",\n\t\"name\": \"Waheed India\"\n\t\n}"
+				},
+				"url": {
+					"raw": "http://www.alhiba-me.com/SmartCallAssistantAPI/api/savecontact/",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"path": [
+						"SmartCallAssistantAPI",
+						"api",
+						"savecontact",
+						""
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Multiple Contacts-1",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"type": "text",
+						"disabled": true
+					},
+					{
+						"key": "Authorization",
+						"value": "Bearer eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiIzMiIsImlhdCI6MTUzNTIwODQ5MiwiZXhwIjoxNTM1ODEzMjkyfQ.3HOTxkEiUe2EE7fiApGnk-0OT2rfkiPhS9bPH269tbNDXcvbSgMXVvgU835zMsSq8yCuHTw-jXjEUMjYBOhGxw",
+						"type": "text",
+						"disabled": true
+					},
+					{
+						"key": "Basic-Auth",
+						"value": "Basic SFVCVU46aHVidW5kZXYh",
+						"type": "text",
+						"disabled": true
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"user_id\": 1,\n    \"contact_size\":2,\n    \"1\": {\n            \"name\": \"Waheed\",\n            \"phone\": \"9713429613\"\n        },\n        \"2\":\n        {\n            \"name\": \"Toseef\",\n            \"phone\": \"9827260117\"\n        }\n}\n"
+				},
+				"url": {
+					"raw": "http://www.alhiba-me.com/SmartCallAssistantAPI/api/addMultiContacts/",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"path": [
+						"SmartCallAssistantAPI",
+						"api",
+						"addMultiContacts",
+						""
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}

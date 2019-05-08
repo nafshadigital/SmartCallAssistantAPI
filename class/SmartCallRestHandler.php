@@ -7,9 +7,12 @@ $base_dir = realpath(dirname(__FILE__)  . $ds . '..') . $ds;
 require_once("{$base_dir}conf{$ds}dbSettings.php");
 
 include_once 'MySQL5.php';
+include_once 'Util.php';
 include_once 'MailClient.php';
 class SmartCallRestHandler extends SimpleRest 
 {
+
+
 	function getCountry()
 	{
 		$arr = json_decode(file_get_contents("CountryCodes.json"));
@@ -18,22 +21,33 @@ class SmartCallRestHandler extends SimpleRest
 		
 	function signUp($signUpObj)
 	{
-		$development = 0;
+
+		$resObj = new stdClass();
+
+	
+		$util  = new Util();
+
 		if(!$signUpObj)
 		{
-			
-			if($development == 1)
-			{
-				echo "Incorrect Parameter ---> Signup";
-				return;
-			}
-
-			echo "Setting Parameter";
-			$signUpObj = new stdClass();
-			$signUpObj -> mobile = "9894695843";
-			$signUpObj -> country_code = "+91";
+			$resObj = $util -> missingParam();	
+			$this -> output($resObj);			
+			return;
 		}
-
+		else
+		{
+			if(!property_exists($signUpObj,'mobile'))
+			{
+				$resObj = $util -> missingParam();	
+				$this -> output($resObj);	
+				return;		
+			}
+			if(!property_exists($signUpObj,'country_code'))
+			{
+				$resObj = $util -> missingParam();	
+				$this -> output($resObj);	
+				return;		
+			}			
+		}
 		
 		$m = new MySQL5();
 		$resultSignUpObj = new stdClass();
@@ -90,11 +104,44 @@ class SmartCallRestHandler extends SimpleRest
 	
 	function checkOtp($checkOtpObj)
 	{
+
+		$resObj = new stdClass();	
+
+		$util  = new Util();
+		$resObj = $util -> missingParam();	
+
 		if(!$checkOtpObj)
 		{
-			echo "Incorrect Parameter";
-			return;
+				$resObj = $util -> missingParam();	
+				$this -> output($resObj);	
+				return;		
 		}
+		else
+		{
+			if(!property_exists($checkOtpObj,'user_id'))
+			{
+				$resObj = $util -> missingParam();	
+				$this -> output($resObj);	
+				return;				
+			}
+			if(!property_exists($checkOtpObj,'verification_code'))
+			{
+				$resObj = $util -> missingParam();	
+				$this -> output($resObj);	
+				return;		
+			}			
+		}
+
+	 	$userid = $checkOtpObj -> user_id;
+		if(!$this->isUserExist($userid))
+		{
+			$resObj = new stdClass();
+			$resObj = $util -> inValidUser();
+
+			$this -> output($resObj);
+			return;
+		}		
+
 		
 		$m = new MySQL5();
 		$resultCheckOtpObj = new stdClass();
@@ -124,12 +171,67 @@ class SmartCallRestHandler extends SimpleRest
 	
 	function updateAccount($updateAccObj)
 	{
-		if(!$updateAccObj)
+
+		$resObj = new stdClass();				
+
+		$util  = new Util();
+		$resObj = $util -> missingParam();	
+
+		$validateObject = $updateAccObj;
+		if(!$validateObject)
 		{
-			echo "Incorrect Parameter";
-			return;
+				$resObj = $util -> missingParam();	
+				$this -> output($resObj);	
+				return;	
 		}
-		
+		else
+		{
+			if(!property_exists($validateObject,'id'))
+			{
+				$resObj = $util -> missingParam();	
+				$this -> output($resObj);	
+				return;				
+			}
+			if(!property_exists($validateObject,'email'))
+			{
+				$resObj = $util -> missingParam();	
+				$this -> output($resObj);	
+				return;		
+			}			
+			if(!property_exists($validateObject,'name'))
+			{
+				$resObj = $util -> missingParam();	
+				$this -> output($resObj);	
+				return;		
+			}			
+			if(!property_exists($validateObject,'android_id'))
+			{
+				$resObj = $util -> missingParam();	
+				$this -> output($resObj);	
+				return;	
+
+			}
+			if(!property_exists($validateObject,'device_id'))
+			{
+				$resObj = $util -> missingParam();	
+				$this -> output($resObj);	
+				return;	
+			}
+		}
+
+		$updateAccObj = $validateObject;
+	
+
+	 	$userid = $updateAccObj -> id;
+		if(!$this->isUserExist($userid))
+		{
+			$resObj = new stdClass();
+			$resObj = $util -> inValidUser();
+
+			$this -> output($resObj);
+			return;
+		}		
+
 		$m = new MySQL5();
 		$resultUpdateAccObj = new stdClass();
 
@@ -157,23 +259,45 @@ class SmartCallRestHandler extends SimpleRest
 	
 	function addContact($userContactsObj)
 	{
-		$development = 1;
 
-		if(!$userContactsObj)
+
+		$resObj = new stdClass();				
+		$util  = new Util();
+		$resObj = $util -> missingParam();	
+
+		$validateObject = $userContactsObj;
+		if(!$validateObject)
 		{
-			
-			if($development == 1)
-			{
-				echo "Addcontact --> Incorrect Parameter";
-				return;
-			}
-
-			$userContactsObj = new stdClass();
-			$userContactsObj -> phone = "919443023965";
-			$userContactsObj -> user_id = "210";
-			$userContactsObj -> name = "Daddy";
-
+				$resObj = $util -> missingParam();	
+				$this -> output($resObj);	
+				return;	
 		}
+		else
+		{
+			if(!property_exists($validateObject,'user_id'))
+			{
+				$resObj = $util -> missingParam();	
+				$this -> output($resObj);	
+				return;				
+			}
+			if(!property_exists($validateObject,'phone'))
+			{
+				$resObj = $util -> missingParam();	
+				$this -> output($resObj);	
+				return;		
+			}			
+		}
+
+
+	 	$userid = $userContactsObj -> user_id;
+		if(!$this->isUserExist($userid))
+		{
+			$resObj = new stdClass();
+			$resObj = $util -> inValidUser();
+
+			$this -> output($resObj);
+			return;
+		}				
 		
 		$m = new MySQL5();
 		$resultSupportObj = new stdClass();
@@ -220,11 +344,43 @@ class SmartCallRestHandler extends SimpleRest
 
 	function createSupport($createSupportObj)
 	{
-		if(!$createSupportObj)
+		$resObj = new stdClass();				
+
+		$util  = new Util();
+		$resObj = $util -> missingParam();			
+
+		$validateObject = $createSupportObj;
+		if(!$validateObject)
 		{
-			echo "Incorrect Parameter";
-			return;
+				$resObj = $util -> missingParam();			
+				$this -> output($resObj);	
+				return;	
 		}
+		else
+		{
+			if(!property_exists($validateObject,'user_id'))
+			{
+				$resObj = $util -> missingParam();			
+				$this -> output($resObj);	
+				return;				
+			}
+			if(!property_exists($validateObject,'message'))
+			{
+				$resObj = $util -> missingParam();			
+				$this -> output($resObj);	
+				return;		
+			}			
+		}
+
+	 	$userid = $createSupportObj -> user_id;
+
+		if(!$this->isUserExist($userid))
+		{
+			$resObj = new stdClass();
+			$resObj = $util -> inValidUser();
+			$this -> output($resObj);
+			return;
+		}		
 		
 		$m = new MySQL5();
 		$resultSupportObj = new stdClass();
@@ -234,60 +390,112 @@ class SmartCallRestHandler extends SimpleRest
 		
 		$id = $inserted_id;
 		
-		$this -> sendCreateSupportEmail($id);
+		if($this -> sendCreateSupportEmail($id))
+		{
+			$resultSupportObj -> message = "Support Create Success and send email for admin..";
+			$this -> output($resultSupportObj);
+		}
+		else
+		{
+			$resultSupportObj -> message = "Not able to send the message";
+			$this -> output($resultSupportObj);
+		}
 		
-		$resultSupportObj -> message = "Support Create Success and send email for admin..";
-		
-		$this -> output($resultSupportObj);
 	}
 	
 	function getAdminEmailIds()
 	{
+		
+
 		$m = new MySQL5();
 		$query = "select admin_email_ids from tbl_admin_email_ids where 1 ";
 
 		$admin_email = $m -> executeQuery($query,'select');
 		$admin['status']=1;
 		$admin['emailaddress']=$admin_email;
-		echo json_encode($admin);
-
-	}
+		$this -> output($admin);
+ 	}
 	
 	function sendCreateSupportEmail($id)
 	{
 
+
 		$m = new MySQL5();
 		$mc = new MailClient();
+		$util  = new Util();
 		
 		$query = "select t1.*, t2.name, mobile from tbl_support t1 left outer join tbl_users t2 on t1.user_id = t2.id where t1.id = '$id' and t1.status = '0' ";
 		$row = $m -> executeQuery($query);
 		
 		$adminEmailIds = $this -> getAdminEmailIds();
 		$toArray = explode(",", $adminEmailIds);
-		
-		foreach($toArray as $to)
+
+		if(!$row)
 		{
-			$message = "Hi Admin, <br><br>Your have received an new support details<br><br>";
-				$message .= "<table cellpadding='8' style='border: 1px solid #00FFFF;'>";
-					$message .= "<tr><th align='left' style='background-color: #00FFFF;'>Date:</th><td>{$row -> msg_date}</td></tr>";
-					$message .= "<tr><th align='left' style='background-color: #00FFFF;'>Name:</th><td>{$row -> name}</td></tr>";
-					$message .= "<tr><th align='left' style='background-color: #00FFFF;'>Mobile:</th><td>{$row -> mobile}</td></tr>";
-					$message .= "<tr><th align='left' style='background-color: #00FFFF;'>Message:</th><td>{$row -> message}</td></tr>";
-			$message .= "</table>";
+			$resObj = new stdClass();
+			$resObj = $util -> inValidUser();
+			$this -> output($resObj);
+			return false;
+	
+
+			if(property_exists($row,'msg_date'))		
+			{
+				$msg_date 	= $row -> msg_date;
+				$name 		= $row -> name;
+				$mobile 	= $row -> mobile;
+				$message    = $row -> message;
+
+				foreach($toArray as $to)
+				{
+					$message = "Hi Admin, <br><br>Your have received an new support details<br><br>";
+						$message .= "<table cellpadding='8' style='border: 1px solid #00FFFF;'>";
+						$message .= "<tr><th align='left' style='background-color: #00FFFF;'>Date:</th><td>{$msg_date}</td></tr>";
+						$message .= "<tr><th align='left' style='background-color: #00FFFF;'>Name:</th><td>{$name}</td></tr>";
+						$message .= "<tr><th align='left' style='background-color: #00FFFF;'>Mobile:</th><td>{$mobile}</td></tr>";
+						$message .= "<tr><th align='left' style='background-color: #00FFFF;'>Message:</th><td>{$message}</td></tr>";
+					$message .= "</table>";
 			
-			$mc -> sendEmail($to, "New Support Details on - ". date('Y-m-d'), $message);
-		}
-		
-		return "SUCCESS..";
+					$mc -> sendEmail($to, "New Support Details on - ". date('Y-m-d'), $message);
+				}		
+				return true;
+			}
+		}	
+		return false;
 	}
 	
 	function updateLastSeen($updateLastObj)
 	{
-		if(!$updateLastObj)
+
+
+		$resObj = new stdClass();				
+		$util  = new Util();		
+
+		$validateObject = $updateLastObj;
+		if(!$validateObject)
 		{
-			echo "Incorrect Parameter";
-			return;
+				$resObj = $util -> missingParam();			
+				$this -> output($resObj);	
+				return;	
 		}
+		else
+		{
+			if(!property_exists($validateObject,'user_id'))
+			{
+				$resObj = $util -> missingParam();			
+				$this -> output($resObj);	
+				return;				
+			}
+		}
+
+	 	$userid = $updateLastObj -> user_id;
+		if(!$this->isUserExist($userid))
+		{
+			$resObj = new stdClass();
+			$resObj = $util -> inValidUser();
+
+			$this -> output($resObj);
+			return;
+		}		
 		
 		$m = new MySQL5();
 		$resultLastseenObj = new stdClass();
@@ -295,31 +503,59 @@ class SmartCallRestHandler extends SimpleRest
 		$query = "update tbl_users set last_seen = '".date("Y-m-d H:i:s")."' where id = '{$updateLastObj -> user_id}' ";
 		$m -> executeQuery($query,'update');
 		
-		$resultLastseenObj -> message = "Last Seen Update Success..".date("Y-m-d H:i:s");
+		$resultLastseenObj -> result = 1;		
+		$resultLastseenObj -> message = "Last Seen ".date("Y-m-d H:i:s");
 		
 		$this -> output($resultLastseenObj);
 	}
 	
 	function getProfile($profileObj){
 
-		$development = 0;
 
-		if(!$profileObj)
+
+		$resObj = new stdClass();				
+		$util  = new Util();
+
+		$validateObject = $profileObj;
+		if(!$validateObject)
 		{
-			
-			if($development == 1)
-			{
-				echo "Incorrect Parameter";
-				return;
-			}
-
-			echo "Setting Parameter";
-			$profileObj = new stdClass();
-			$profileObj -> id = 178;
-			$profileObj -> android_id = 178;
-			$profileObj -> device_id = 178;
-
+				$resObj = $util -> missingParam();			
+				$this -> output($resObj);	
+				return;	
 		}
+		else
+		{
+			if(!property_exists($validateObject,'id'))
+			{
+				$resObj = $util -> missingParam();			
+				$this -> output($resObj);	
+				return;				
+			}
+			if(!property_exists($validateObject,'device_id'))
+			{
+				$resObj = $util -> missingParam();			
+				$this -> output($resObj);	
+				return;				
+			}	
+			if(!property_exists($validateObject,'android_id'))
+			{
+				$resObj = $util -> missingParam();			
+				$this -> output($resObj);	
+				return;				
+			}						
+		}
+
+	 	$userid = $profileObj -> id;
+		if(!$this->isUserExist($userid))
+		{
+			$resObj = new stdClass();
+			$resObj = $util -> inValidUser();
+
+			$this -> output($resObj);
+			return;
+		}
+ 
+
 		$m = new MySQL5();
 		$resultSignIn = new stdClass();
 		
@@ -329,12 +565,21 @@ class SmartCallRestHandler extends SimpleRest
 		$message = "User does not exists";
 		
 		if(isset($profileObj -> android_id) && isset($profileObj -> device_id)) {
-				$query = "select * from tbl_users where id = '{$profileObj -> id}' ";
+				$query = "select * from tbl_users where id = '{$profileObj -> id}' and android_id='{$profileObj -> android_id}' and device_id= '{$profileObj -> device_id}' ";
+
 				$row = $m -> executeQuery($query,'select');
+
+				$user -> user_record = $row;
+				$user -> user_exists = 1;
+				$user -> message		= "User exists";
+
+				if(empty($row))
+				{
 					$user -> user_record = $row;
-					$user -> user_exists = 1;
-					$user -> message		= "User exists";
-				
+					$user -> user_exists = 0;
+					$user -> message = "User exists but problem with android and device id missing !";
+				}				
+
 			}
 			else
 			{
@@ -347,11 +592,51 @@ class SmartCallRestHandler extends SimpleRest
 
 
 function sendNotification($sendNotiObj){
-		if(!$sendNotiObj)
+
+
+		$resObj = new stdClass();				
+		$util  = new Util();
+
+		$validateObject = $sendNotiObj;
+		if(!$validateObject)
 		{
-			echo "Incorrect Parameter";
+				$resObj = $util -> missingParam();			
+				$this -> output($resObj);	
+				return;	
+		}
+		else
+		{
+			if(!property_exists($validateObject,'phone_number'))
+			{
+				$resObj = $util -> missingParam();			
+				$this -> output($resObj);	
+				return;				
+			}
+			if(!property_exists($validateObject,'user_id'))
+			{
+				$resObj = $util -> missingParam();			
+				$this -> output($resObj);	
+				return;				
+			}	
+			if(!property_exists($validateObject,'message'))
+			{
+				$resObj = $util -> missingParam();			
+				$this -> output($resObj);	
+				return;				
+			}						
+		}
+	 	$userid = $sendNotiObj -> user_id;
+		if(!$this->isUserExist($userid))
+		{
+			$resObj = new stdClass();
+			$resObj = $util -> inValidUser();
+
+			$this -> output($resObj);
 			return;
 		}
+
+
+	 
 		
 		$m = new MySQL5();
 		$resultNotiObj = new stdClass();
@@ -359,32 +644,76 @@ function sendNotification($sendNotiObj){
 		$resultNotiObj -> message = "There is no user with Phone Number : ".$sendNotiObj -> phone_number;		
 		$query = "select id from tbl_users where concat(country_code,mobile) = '{$sendNotiObj -> phone_number}' ";
 		$to_user_id = $m -> executeScalar($query);
+
 		
-		
-		if($to_user_id){
+		if($to_user_id && $to_user_id != $userid){
 			$query = "insert into tbl_notifications(user_id,to_user_id,message,created_date) values ('{$sendNotiObj -> user_id}','$to_user_id','{$sendNotiObj -> message}','".date('Y-m-d H:i:s')."')";
 			$m -> executeQuery($query,'insert');
 			
 			$resultNotiObj -> status = "1";
 			$resultNotiObj -> message = "Success";
 		}
+		if($to_user_id == $userid)
+		{
+			$resultNotiObj -> message = "ha ha You are trying to send message to yourself !";		
+		}
 		
 		$this -> output($resultNotiObj);
 	}
 	
 function getMaxid($userObj){
-	$m = new MySQL5();
-	$query = "select max(id) from tbl_notifications where to_user_id = '{$userObj -> user_id}'";
-	$maxId = $m -> executeScalar($query);
-	$resObj = new stdClass();
-	$resObj -> maxId = $maxId;
-	$this -> output($resObj);
+
+
+
+	$resObj = new stdClass();				
+	$util  = new Util();	
+
+	$validateObject = $userObj;
+	if(!$validateObject)
+	{
+			$resObj = $util -> missingParam();			
+			$this -> output($resObj);	
+			return;	
+	}
+	else
+	{
+		if(!property_exists($validateObject,'user_id'))
+		{
+			$resObj = $util -> missingParam();			
+			$this -> output($resObj);	
+			return;				
+		}
+	}
+
+ 	$userid = $userObj -> user_id;
+	if(!$this->isUserExist($userid))
+	{
+		$resObj = new stdClass();
+		$resObj = $util -> inValidUser();
+
+		$this -> output($resObj);
+		return;
+	}	
+	else
+	{
+		$m = new MySQL5();
+		$query = "select max(id) from tbl_notifications where to_user_id = '{$userObj -> user_id}'";
+		$maxId = $m -> executeScalar($query);
+		$resObj = new stdClass();
+		$resObj -> maxId = $maxId;
+		if(empty($maxId))
+		{
+		$resObj -> maxId = 0;	
+		}
+		
+		$this -> output($resObj);
+
+	}
 }
 
 function getNotification($getNotiObj){
 	$m = new MySQL5();
 
-	//SELECT n.id,n.created_date,n.message,n.to_user_id,n.user_id,u.name FROM tbl_notifications n ,tbl_users u WHERE n.id > 49 AND n.to_user_id = 193 AND u.id = n.to_user_id ORDER BY n.id DESC LIMIT 0,5
 	
 
 	$query = "select * from tbl_notifications where id > '{$getNotiObj -> id}' and to_user_id = '{$getNotiObj -> user_id}' order by id desc limit 0,5";
@@ -408,9 +737,42 @@ function getNotification($getNotiObj){
 
 function updateFCM($updateAccObj)
 {
-	if(!$updateAccObj)
+		$resObj = new stdClass();				
+		$util  = new Util();
+
+		$validateObject = $updateAccObj;
+		if(!$validateObject)
+		{
+				$resObj = $util -> missingParam();			
+				$this -> output($resObj);	
+				return;	
+		}
+		else
+		{
+			if(!property_exists($validateObject,'id'))
+			{
+				$resObj = $util -> missingParam();			
+				$this -> output($resObj);	
+				return;				
+			}
+			if(!property_exists($validateObject,'fcmtoken'))
+			{
+				$resObj = $util -> missingParam();			
+				$this -> output($resObj);	
+				return;				
+			}	
+				
+		}
+
+
+
+ 	$userid = $validateObject -> id;
+	if(!$this->isUserExist($userid))
 	{
-		echo "Incorrect Parameter";
+		$resObj = new stdClass();
+		$resObj = $util -> inValidUser();
+
+		$this -> output($resObj);
 		return;
 	}
 	
@@ -454,12 +816,46 @@ function sendHeart($userObj)
 	$this -> output($resultSignUpObj);
 }
 
-//Toseef's Code
+//Toseef's Code 123123
 function sendHeartNotification($sendHeartDetails)
 {
-	if(!$sendHeartDetails)
+
+		$resObj = new stdClass();				
+		$util  = new Util();
+
+		$validateObject = $sendHeartDetails;
+		if(!$validateObject)
+		{
+				$resObj = $util -> missingParam();			
+				$this -> output($resObj);	
+				return;	
+		}
+		else
+		{
+			if(!property_exists($validateObject,'sender_id'))
+			{
+				$resObj = $util -> missingParam();			
+				$this -> output($resObj);	
+				return;				
+			}
+			if(!property_exists($validateObject,'receiver_phone'))
+			{
+				$resObj = $util -> missingParam();			
+				$this -> output($resObj);	
+				return;				
+			}	
+				
+		}
+
+
+
+ 	$userid = $sendHeartDetails -> sender_id;
+	if(!$this->isUserExist($userid))
 	{
-		echo "Incorrect Parameter";
+		$resObj = new stdClass();
+		$resObj = $util -> inValidUser();
+
+		$this -> output($resObj);
 		return;
 	}
 
@@ -476,8 +872,11 @@ function sendHeartNotification($sendHeartDetails)
 	$sender_phone = $m -> executeScalar($query);
 
 
-	$query = "select id from tbl_users where concat(country_code,mobile)='$receiver_phone'";
-	$receiverid = $m -> executeScalar($query);
+	$query = "select id,name from tbl_users where concat(country_code,mobile)='$receiver_phone'";
+	$receiver = $m -> executeQuery($query);
+
+	$receiverid  	= $receiver["id"];
+	$receivername  = $receiver["name"];
 
 
 	$userContactsObj = new stdClass();
@@ -486,7 +885,8 @@ function sendHeartNotification($sendHeartDetails)
 	$userContactsObj -> user_id = $receiverid;
 	$ignore = $this->addContact($userContactsObj);
 
-
+	$resultObj = new stdClass();
+	$resultObj -> status = 0;
 	if($senderid == $receiverid)
 	{
 		$resultObj -> message = "You cannot send heart to yourself !";
@@ -497,7 +897,7 @@ function sendHeartNotification($sendHeartDetails)
 
 	$url = "https://fcm.googleapis.com/fcm/send";
 
-	$resultObj = new stdClass();
+
 	$resultObj -> status = 0;
 
 
@@ -574,7 +974,7 @@ function sendHeartNotification($sendHeartDetails)
 		$resultObj -> success  = $res['success'];
     	$resultObj -> failure  = $res['failure'];
 		$resultObj -> multicast_id = $res['multicast_id'];
-		$resultObj -> message  = "Heart Sent Successfully ! from ".$sender_name." to the userid".$receiverid;
+		$resultObj -> message  = "Heart from ".$sender_name." to ".$receivername." Successfully ! ";
 		
 	} 
 	//entering notification data
@@ -587,13 +987,48 @@ function sendHeartNotification($sendHeartDetails)
 
 	function addMultiContacts($contacts)
 	{
-		if(!$contacts)
+
+
+		$resObj = new stdClass();				
+		$util  = new Util();
+
+		$validateObject = $contacts;
+		if(!$validateObject)
 		{
-			echo "addMultiContacts --> Incorrect Parameter";
-			return;
+				$resObj = $util -> missingParam();			
+				$this -> output($resObj);	
+				return;	
+		}
+		else
+		{
+			if(!property_exists($validateObject,'user_id'))
+			{
+				$resObj = $util -> missingParam();			
+				$this -> output($resObj);	
+				return;				
+			}
+			if(!property_exists($validateObject,'contact_size'))
+			{
+				$resObj = $util -> missingParam();			
+				$this -> output($resObj);	
+				return;				
+			}	
+				
 		}
 
-//	    $contactsarray=json_decode($contacts,true);
+
+ 	$userid = $validateObject -> user_id;
+	if(!$this->isUserExist($userid))
+	{
+		$resObj = new stdClass();
+		$resObj = $util -> inValidUser();
+
+		$this -> output($resObj);
+		return;
+	}
+
+
+		$contacts = $validateObject;
 
 		$contactObject = new stdClass();
 		$contactObject = $contacts;
@@ -635,36 +1070,34 @@ function sendHeartNotification($sendHeartDetails)
 
 			  $temp -> message =  $this->addContact($userContactsObj);
 		} 
+ 
+		$this->GetRegisteredContact($contacts);
 
-			//echo json_encode($temp);
-			
-			$userContactsObj = new stdClass();
-
-			if((isset($userObj -> user_id)))
-			{
-				$user_id = $contacts -> user_id;
-				$this->GetRegisteredContact($userContactsObj);
-			}
-
-			if($size ==0)
-			{
-				echo "List is empty".$size."...".$user_id;
-			}
 }
 
 // getting resgistered from contact list of given user
 	function GetRegisteredContact($userObj)
 	{
-		if(!$userObj)
+
+		$validateObject = $userObj;
+	
+		$util  = new Util();
+
+	
+		if(!$validateObject)
 		{
-			echo "GetRegisteredContact --> Incorrect Parameter";
+			$resObj = $util -> missingParam();
+			$this -> output($resObj);
 			return;
 		}
-
-		if(!(isset($userObj -> user_id)))
+		else
 		{
-			echo "GetRegisteredContact User ID Missing --> Incorrect Parameter";
-			return;
+			if(!property_exists($validateObject,'user_id'))
+			{
+				$resObj = $util -> missingParam();
+				$this -> output($resObj);	
+				return;				
+			}
 		}
 
 		$m = new MySQL5();
@@ -675,7 +1108,8 @@ function sendHeartNotification($sendHeartDetails)
 		$contacts = $m -> executeQuery($query,'select');
 		$contactlist['status']=1;
 		$contactlist['list']=$contacts;
-		echo json_encode($contactlist);
+
+		$this -> output($contactlist);
 		
 	}
 
@@ -684,12 +1118,51 @@ function sendHeartNotification($sendHeartDetails)
     /**
      * @param $callNotificationDetail
      */
-    function callerNotification($callNotificationDetail)
+function callerNotification($callNotificationDetail)
 {
 
-	if(!$callNotificationDetail)
+		$resObj = new stdClass();				
+
+		$validateObject = $callNotificationDetail;
+	
+		$util  = new Util();
+	
+		if(!$validateObject)
+		{
+			$resObj = $util -> missingParam();
+			$this -> output($resObj);
+			return;
+		}
+		else
+		{
+			if(!property_exists($validateObject,'sender_id'))
+			{
+				$resObj = $util -> missingParam();
+				$this -> output($resObj);	
+				return;				
+			}
+			if(!property_exists($validateObject,'receiver_phone'))
+			{
+				$resObj = $util -> missingParam();
+				$this -> output($resObj);	
+				return;				
+			}	
+			if(!property_exists($validateObject,'message'))
+			{
+				$resObj = $util -> missingParam();
+				$this -> output($resObj);	
+				return;				
+			}			
+				
+	}
+
+	$senderid	= $callNotificationDetail -> sender_id;
+	if(!$this->isUserExist($senderid))
 	{
-		echo "callerNotification -->Incorrect Parameter";
+		$resObj = new stdClass();
+		$resObj = $util -> inValidUser();
+
+		$this -> output($resObj);
 		return;
 	}
 
@@ -700,13 +1173,13 @@ function sendHeartNotification($sendHeartDetails)
 
 	$m = new MySQL5();
 
-    $resultObj = "";
-	$query = "select id from tbl_users where concat(country_code,mobile)='$receiver_phone'";
-	$receiverid = $m -> executeScalar($query);
+	$resultObj = new stdClass();
+	$query = "select id ,fcm_token from tbl_users where concat(country_code,mobile)='$receiver_phone'";
+	$receiver = $m -> executeQuery($query);
 
-	//getting fcm tokens of receiver
-	$query = "select fcm_token from tbl_users where id='$receiverid' ";
-	$receiver_fcm = $m -> executeScalar($query);
+	$receiverid  	= $receiver["id"];
+	$receiver_fcm 	= $receiver["fcm_token"];
+
 
 	if(strlen($receiver_fcm) < 10)
 	{
@@ -716,13 +1189,16 @@ function sendHeartNotification($sendHeartDetails)
 	}
 
 
-	$query = "select name from tbl_users where id=$senderid";
-	$sender_name = $m -> executeScalar($query);
+	$query = "select concat(country_code,mobile) as mobile,name from tbl_users where id=$senderid";
+	$sender = $m -> executeQuery($query);
 
-	$query = "select concat(country_code,mobile) as mobile from tbl_users where id=$senderid";
-	$sender_phone = $m -> executeScalar($query);
+	$sender_phone = $sender["mobile"];
+	$sender_name = $sender["name"];	
 
-
+	if(strlen($sender_name) < 2)
+	{
+		$sender_name = $sender_phone;	
+	}	
 
 	$userContactsObj = new stdClass();
 	$userContactsObj -> phone = $sender_phone;
@@ -745,24 +1221,8 @@ function sendHeartNotification($sendHeartDetails)
 	$resultObj -> status = 0;
 
 
-	if(strlen($sender_name) < 2)
-	{
-		$query = "select concat(country_code,mobile) from tbl_users where id='$senderid'";
-		$sender_name = $m -> executeScalar($query);
-		if(strlen($sender_name) < 2)
-		{
-		$resultObj -> status   = 0;
-		$resultObj -> message  = "Wrong sender !";
-		$this -> output($resultObj);
-		return;
-		}
-
-	}
-
 	$title = $sender_name." is not available !";
 	$body= $message;
-
-	echo $sender_name;
 
 
 	//sending notification
@@ -803,20 +1263,111 @@ function sendHeartNotification($sendHeartDetails)
 		$resultObj -> success  = $res['success'];
 	    	$resultObj -> failure  = $res['failure'];
 		$resultObj -> multicast_id = $res['multicast_id'];
-		$resultObj -> message  = "Message".$message." about the ".$sender_name." sent succesfully !".$receiver_fcm;
+		$resultObj -> message  = $message;
+		$resultObj -> information  = "Message ->".$message." about the ".$sender_name." sent succesfully !";
 		
 	} 
-
 	$this -> output($resultObj);
+}
+
+
+	
+
+
+function getFCMToken($userObj){
+
+	$resObj = new stdClass();
+	$resObj -> status = 0;
+
+	
+	$util  = new Util();
+	
+	if(!$userObj)
+	{
+		$resObj = $util -> missingParam();
+		$this -> output($resObj);
+		return;
+	}
+
+
+	if(property_exists($userObj,'user_id'))
+	{
+ 		$userid = $userObj -> user_id;
+		if(!$this->isUserExist($userid))
+		{
+		 
+			$resObj = $util -> inValidUser();
+			$this -> output($resObj);
+			return;
+		}		
+	}
+
+
+	$resultObj = new stdClass();
+	$m = new MySQL5();
+	if(property_exists($userObj,'user_id'))
+	{
+		$query = "select name,fcm_token,concat(country_code,mobile) as mobile from tbl_users where id='{$userObj -> user_id}'";	
+	}
+	elseif (property_exists($userObj,'mobile')) {
+		$query = "select name,fcm_token,concat(country_code,mobile) as mobile from tbl_users where concat(country_code,mobile)='{$userObj -> mobile}'";	
+	}
+	
+	$receiver = $m -> executeQuery($query);
+
+	$resObj = new stdClass();
+
+	if(empty($receiver))
+	{
+		$resObj -> status = 0;			
+		$resObj -> result = "failure";	
+		$resObj -> message = "User ID or Mobile does not exist !";			
+	}
+	else{
+		$resObj -> name = $receiver["name"];
+		$resObj -> fcm_token = $receiver["fcm_token"];	
+		$resObj -> mobile = $receiver["mobile"];		
+		$resObj -> status = 1;			
+		$resObj -> result = "success";				
+		$resObj -> message = "success";					
+	}
+
+	$this -> output($resObj);
 }
 
 function countContacts($userObj){
 
+	
+	$util  = new Util();
+	
 	if(!$userObj)
 	{
-		echo "User ID -->Incorrect Parameter";
+		$resObj = $util -> missingParam();
+		$this -> output($resObj);
 		return;
 	}
+	else
+	{
+		if(!property_exists($userObj,'user_id'))
+		{
+			$resObj = $util -> missingParam();
+			$this -> output($resObj);
+			return;
+		}
+								
+	}
+	
+
+ 	$userid = $userObj -> user_id;
+	if(!$this->isUserExist($userid))
+	{
+		 
+		$resObj = $util -> inValidUser();
+		$this -> output($resObj);
+		return;
+	}
+	
+
 
 	$m = new MySQL5();
 	$query = "select count(id) from tbl_user_contacts where user_id = '{$userObj -> user_id}'";
@@ -826,7 +1377,22 @@ function countContacts($userObj){
 	$this -> output($resObj);
 }
 
-}
+function isUserExist($user_id){
 
+
+	$m = new MySQL5();
+	$query = "select count(*) from tbl_users where id = '$user_id'";
+	$count = $m -> executeScalar($query);
+
+	if($count == 0)
+	{
+		return false;
+	}
+	else{
+		return true;
+	}
+
+}
+}
 
 ?>

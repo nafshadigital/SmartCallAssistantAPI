@@ -135,5 +135,11 @@ switch($view){
 		$smartCallRestHandler = new SmartCallRestHandler();
 		$smartCallRestHandler -> countContacts($requestObj);
 	break;
+
+	case "GETFCMTOKEN":
+		$smartCallRestHandler = new SmartCallRestHandler();
+		$smartCallRestHandler -> getFCMToken($requestObj);
+	break;
+	
 }
 ?>
